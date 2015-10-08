@@ -6,10 +6,10 @@ $header_color : #fff;
 $font_average : 1.2em;
 $link_color : #009fbf;
 $link_color_hover : #e000e3;
-$font_family : 'Comic Sans MS', cursive, sans-serif;
-$font_second_family: Impact, Charcoal, sans-serif;
-$btn_font: 'Niconne', cursive, sans-serif;
-$keyboard_font: 'Cousine', Verdana, monospace;
+$font_family : Arial, cursive, sans-serif;
+$font_second_family: Times, sans-serif;
+$btn_font: Arial, sans-serif;
+$keyboard_font: Helvetica, Verdana, monospace;
 $font_size : 17px;
 $maxwidth : 1180px;
 $line_color : #d9d9d9;
@@ -80,7 +80,7 @@ html, body{
   min-height:100%;
 }
 img{ border-style:none; vertical-align:top; }
-a{ text-decoration:underline; color:#ffffff; font-weight:bold; font-family:$keyboard_font; font-size:1em; }
+a{ text-decoration:underline; color:$text_hover; font-weight:bold; font-family:$keyboard_font; font-size:1em; }
 a:hover{text-decoration:none;}
 
 h1 { color: $text;font-family: $font_family; font-weight:normal; text-align:center; font-size:50px; line-height:1.2em; padding:10px 0px; margin:0px auto 0px;}
