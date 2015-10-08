@@ -1,0 +1,21 @@
+{ 
+    "settings": [
+        {
+            "imagePath" : "images/",
+            "main_background" : "bg_mainimage.jpg",
+            "guidelines_header" : "how to play",
+            "rules_header" : "rules",
+            "shake_text" : "Shake to play",
+            "resistance" : "20",
+            "tree_settings" : [
+                {
+                    "number_of_segments" : "6",
+                    "tree_segment_prename" : "tree_",
+                    "tree_segment_filetype" : ".png",
+                    "tree_top_src" : "tree_top.png",
+                    "tree_root_src" : "tree_root.png"
+                }
+            ]
+        }
+    ]
+}
