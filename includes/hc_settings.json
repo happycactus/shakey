@@ -2,14 +2,14 @@
     "settings": [
         {
             "imagePath" : "images/",
-            "main_background" : "bg_mainimage.jpg",
+            "main_background" : "bg.png",
             "guidelines_header" : "how to play",
             "rules_header" : "rules",
             "shake_text" : "Shake to play",
             "resistance" : "20",
             "segment" : 
                 {
-                    "number_of_segments" : "8",
+                    "number_of_segments" : "7",
                     "segment_filepath" : "segments/",
                     "segment_alternative_text" : "SHAKE ME",
                     "segment_prename" : "segment_",

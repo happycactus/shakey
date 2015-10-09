@@ -13,20 +13,45 @@
 
 	<script>
         Modernizr.load({
-            load: ['js/lib/jquery-1.11.3.min.js', '//code.jquery.com/ui/1.11.4/jquery-ui.js', 'js/tree.js', 'js/scripts.js']
+            load: ['js/lib/jquery-1.11.3.min.js', '//code.jquery.com/ui/1.11.4/jquery-ui.js', 'js/lib/jqueryRotate.js', 'js/lib/shake/jquery.ios-shake.js', 'js/lib/shake/jquery.ui.shake.js', 'js/tree.js', 'js/scripts.js']
         });
     </script>
-    <script type="text/javascript" src="js/lib/jqueryRotate.js"></script>
 </head>
 <body>
-	<div class="container">
-        <img src="images/logo.gif" width="500" alt="Happy Cactus logo" />                
-        <div id="tree">
+    <div class="container">
+        <!-- <div class="main">
+          <h2>Device Motion</h2>
+          <table>
+            <tr>
+              <td>Event Supported</td>
+              <td id="dmEvent"></td>
+            </tr>
+            <tr>
+              <td>acceleration</td>
+              <td id="moAccel"></td>
+            </tr>
+            <tr>
+              <td>accelerationIncludingGravity</td>
+              <td id="moAccelGrav"></td>
+            </tr>
+            <tr>
+              <td>rotationRate</td>
+              <td id="moRotation"></td>
+            </tr>
+            <tr>
+              <td>interval</td>
+              <td id="moInterval"></td>
+            </tr>
+          </table>
+        </div>    -->
+
+        <div style="position:absolute; bottom:10%; left:35%;" id="tree">
                <!-- /* cut up tree to create the illustion of swaying */ -->
-        </div>    
+        </div>   
         <div class="action_button">
-            <a href="#" id="knop" class="knop">SPEL</a>
-        </div>    
+            <a href="#" id="shake" class="knop">Shake uw mobiel of klik de boom</a>
+          <!--   <img src="images/moving.gif" width="250" alt="Voor Ian" />  -->
+        </div> 
     </div>
 </body>
 </html>
