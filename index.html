@@ -9,18 +9,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/resp.css">
 	<script type="text/javascript" src="js/lib/modernizr-2.7.0.min.js"></script>
 
 	<script>
         Modernizr.load({
-            load: ['js/lib/jquery-1.11.3.min.js', '//code.jquery.com/ui/1.11.4/jquery-ui.js', 'js/lib/jqueryRotate.js', 'js/lib/shake/jquery.ios-shake.js', 'js/lib/shake/jquery.ui.shake.js', 'js/tree.js', 'js/scripts.js']
+            load: ['js/lib/jquery-1.11.3.min.js', '//code.jquery.com/ui/1.11.4/jquery-ui.js', 'js/lib/jqueryRotate.js', 'js/lib/shake/jquery.ios-shake.js', 'js/lib/shake/jquery.ui.shake.js', 'js/tree.js', 'js/lib/jquery.easing.min.js', 'js/scripts.js']
         });
     </script>
 </head>
 <body>
     <div class="container">
-        <!-- <div class="main">
-          <h2>Device Motion</h2>
+        <div class="main">
+       
           <table>
             <tr>
               <td>Event Supported</td>
@@ -43,9 +44,8 @@
               <td id="moInterval"></td>
             </tr>
           </table>
-        </div>    -->
-
-        <div style="position:absolute; bottom:10%; left:35%;" id="tree">
+        </div>    
+        <div id="tree">
                <!-- /* cut up tree to create the illustion of swaying */ -->
         </div>   
         <div class="action_button">

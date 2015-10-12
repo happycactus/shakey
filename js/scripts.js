@@ -67,18 +67,18 @@
 			info = eventData.interval;
 			$("#moInterval").text(info);
 		}
-		//setInterval(function(){ $('#shake').shake(); }, 3000);
+		setInterval(function(){ $('#shake').shake(); }, 3000);
             
-        // function phoneShake() {
-        //     $('#shake').hide();
-        //     alert('shake');
-        // }
+        function phoneShake() {
+            game.shakeLeft(70);
+        
+        }
 
-        // $.shake({
-        //     callback: function() {
-        //         phoneShake();
-        //     }
-        // });
+        $.shake({
+            callback: function() {
+                phoneShake();
+            }
+        });
 
 
 

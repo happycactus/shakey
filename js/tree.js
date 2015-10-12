@@ -106,7 +106,7 @@ HCSegment.prototype = {
 	shakeRight: function(max_degree){
 		var t= this;
 		var number_segments = parseInt(this.segment.number_of_segments, 10)-1;
-		var degrees = max_degree / number_segments;
+		var degrees = Math.floor(max_degree / number_segments);
 		
 		var previous = degrees;
 		var center_y = 150;
@@ -125,9 +125,10 @@ HCSegment.prototype = {
 				//console.log($("div#divsegment_"+i-1+" img")[0].height);
 				$("div#divsegment_"+ i)
 				.rotate({
-					duration:800,
+					duration:150,
 					center: [center_x+'%', center_y+'%'],
 					animateTo: previous,
+					easing: $.easing.easeInOutCubic,
 					callback: function(){   
 						t.shakeLeft(max_degree/2);
 					 }
@@ -141,7 +142,7 @@ HCSegment.prototype = {
 	shakeLeft: function(max_degree){
 		var t= this;
 		var number_segments = parseInt(this.segment.number_of_segments, 10)-1;
-		var degrees = max_degree / number_segments;
+		var degrees = Math.floor(max_degree / number_segments);
 		
 		var previous = degrees;
 		var center_y = 150;
@@ -159,9 +160,10 @@ HCSegment.prototype = {
 				$("div#divsegment_"+ i)
 					.rotate({
 						angle: previous, 
-						duration:800,
+						duration:150,
 						center: [center_x+'%', center_y+'%'],
 						animateTo: -previous,
+						easing: $.easing.easeInOutCubic,
 						// easing: function (x,t,b,c,d){
 						// 	 return c*(t/d)+b;
 						// },
@@ -173,48 +175,9 @@ HCSegment.prototype = {
 			}
 		}
 	
-	},
-	// shakeCenter: function(max_degree, direction){
-	// 	var t= this;
-	// 	var number_segments = parseInt(this.segment.number_of_segments, 10)-1;
-	// 	var degrees = max_degree / number_segments;
-		
-	// 	var previous = degrees;
-	// 	var center_y = 150;
-	// 	var center_x = 50;
+	}
 
-	// 	//console.log(height);
-	// 	//var center_margin = 100;//(100 - center_y) / number_segments;
-	// 	//var centerx_margin = 0;//(1- center_x) / number_segments;
-
-	// 	if ( max_degree > 1){
-	// 		for (var i = number_segments -1; i >= 0; i--) {
-	// 			//console.log(number_segments + " : i: " + i);
-	// 			previous += degrees;
-	// 			if (direction === 'right'){
-	// 				center_x -= 1;//centerx_margin;
-	// 			} else {
-	// 				center_x += 1;
-	// 			}
-	// 			center_y += 10;//center_margin;//100%';
-	// 			//console.log($("div#divsegment_"+i-1+" img")[0].height);
-	// 			$("div#divsegment_"+ i)
-	// 			.rotate({
-	// 				duration:500,
-	// 				center: [center_x+'%', center_y+'%'],
-	// 				animateTo: 0,
-	// 				callback: function(){   
-	// 					if (direction === "right"){
-	// 						t.shakeRight(max_degree/2);
-	// 					} else {
-	// 						t.shakeLeft(max_degree/2);
-	// 					}
-	// 				 }
-	// 			});
-	// 		}
-	// 		//console.log($("#divsegment_"+ i));
-	// 	}
 		
 	
-	// }
+
 };
