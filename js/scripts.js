@@ -28,7 +28,7 @@
 				$("#answer").text(tiltLR);// + " : " + tiltFB + " : " + dir);
 				
 
-				if (tiltLR < 0){
+				if (tiltLR < 0 || tiltFB < 0){
 					game.moveLeft(-tiltLR, 2);
 				} else {
 					game.moveRight(tiltLR, 2);
@@ -83,32 +83,32 @@
 		}
 		//setInterval(function(){ $('#shake').shake(); }, 3000);
             
-        function phoneShake() {
-            //game.shakeLeft(70);
+        // function phoneShake() {
+        //     //game.shakeLeft(70);
         
-        }
+        // }
 
-        $.shake({
-            callback: function() {
-                phoneShake();
-            }
-        });
+        // $.shake({
+        //     callback: function() {
+        //         phoneShake();
+        //     }
+        // });
 
 
 
 		//Allow only one click event
 		var inaction = false;
 		
-		var doc_width = $(document).width();
+		// var doc_width = $(document).width();
 			
-		$('.container').width( doc_width );
+		// $('.container').width( doc_width );
 		
 		//WINDOW RESIZE
-		$(window).resize(function(){
-			var doc_width = $(document).width();
+		// $(window).resize(function(){
+		// 	var doc_width = $(document).width();
 
-			$('.container').width( doc_width );
-		});
+		// 	$('.container').width( doc_width );
+		// });
 
 	});
 	
