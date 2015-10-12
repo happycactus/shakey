@@ -14,27 +14,37 @@
 		
 		if (window.DeviceOrientationEvent) {
 			// Listen for the deviceorientation event and handle the raw data
-			window.addEventListener('devicemotion', deviceMotionHandler);
-			// window.addEventListener('devicemotion', function(eventData) {
-			// 	// gamma is the left-to-right tilt in degrees, where right is positive
-			// 	var tiltLR = eventData.gamma;
+			//window.addEventListener('devicemotion', deviceMotionHandler);
+			window.addEventListener('deviceorientation', function(eventData) {
+				// gamma is the left-to-right tilt in degrees, where right is positive
+				var tiltLR = Math.round(eventData.gamma);
 
-			// 	// beta is the front-to-back tilt in degrees, where front is positive
-			// 	var tiltFB = eventData.beta;
+				// beta is the front-to-back tilt in degrees, where front is positive
+				var tiltFB = Math.round(eventData.beta);
 
-			// 	// alpha is the compass direction the device is facing in degrees
-			// 	var dir = eventData.alpha;
+				// alpha is the compass direction the device is facing in degrees
+				var dir = Math.round(eventData.alpha);
 
-			// 	// call our orientation event handler
-			// 	devOrientationHandler(tiltLR, tiltFB, dir);
-			// }, false);
+				$("#answer").text(tiltLR);// + " : " + tiltFB + " : " + dir);
+				
+
+				if (tiltLR < 0){
+					game.moveLeft(-tiltLR, 2);
+				} else {
+					game.moveRight(tiltLR, 2);
+					//$("#moRotation").text(tiltLR);
+				}
+
+				// call our orientation event handler
+				//devOrientationHandler(tiltLR, tiltFB, dir);
+			}, false);
 		} else {
 			$("#doEvent").text("Not supported.");
 		}
 
-		// function devOrientationHandler(tiltLR, tiltFB, dir){
-		// 	alert(tiltLR + " : " + tiltFB + " : " + dir);
-		// }
+		//function devOrientationHandler(tiltLR, tiltFB, dir){
+		 	//alert(tiltLR + " : " + tiltFB + " : " + dir);
+		//}
 
 		function deviceMotionHandler(eventData) {
 			var info, xyz = "[X, Y, Z]";
@@ -43,34 +53,38 @@
 			//console.log( "alpha: " + Math.round(event.rotationRate.alpha) );
 			//$("#dmEvent").text("alpha: " + Math.round(event.rotationRate.alpha));
 			// // Grab the acceleration from the results
-			var acceleration = eventData.acceleration;
-			info = xyz.replace("X", Math.round(acceleration.x),2);
-			info = info.replace("Y", Math.round(acceleration.y),2);
-			info = info.replace("Z", Math.round(acceleration.z),2);
-			$("#moAccel").text(info);
+			// var acceleration = eventData.acceleration;
+			// info = xyz.replace("X", Math.round(acceleration.x),2);
+			// info = info.replace("Y", Math.round(acceleration.y),2);
+			// info = info.replace("Z", Math.round(acceleration.z),2);
+			// $("#moAccel").text(info);
 
-			// Grab the acceleration including gravity from the results
-			acceleration = eventData.accelerationIncludingGravity;
-			info = xyz.replace("X", Math.round(acceleration.x),2);
-			info = info.replace("Y", Math.round(acceleration.y),2);
-			info = info.replace("Z", Math.round(acceleration.z),2);
-			$("#moAccelGrav").text(info);
+			// // Grab the acceleration including gravity from the results
+			// acceleration = eventData.accelerationIncludingGravity;
+			// info = xyz.replace("X", Math.round(acceleration.x),2);
+			// info = info.replace("Y", Math.round(acceleration.y),2);
+			// info = info.replace("Z", Math.round(acceleration.z),2);
+			// $("#moAccelGrav").text(info);
 
-			// Grab the rotation rate from the results
-			var rotation = eventData.rotationRate;
-			info = xyz.replace("X", Math.round(rotation.alpha),2);
-			info = info.replace("Y", Math.round(rotation.beta),2);
-			info = info.replace("Z", Math.round(rotation.gamma),2);
-			$("#moRotation").text(info);
+			// if ((Math.round(acceleration.x),2) === 2){
+			// 	//alert(Math.round(acceleration.x),2);
+			// 	//game.moveLeft( Math.round(acceleration.x),2 );
+			// }
+			// // Grab the rotation rate from the results
+			// var rotation = eventData.rotationRate;
+			// info = xyz.replace("X", Math.round(rotation.alpha),2);
+			// info = info.replace("Y", Math.round(rotation.beta),2);
+			// info = info.replace("Z", Math.round(rotation.gamma),2);
+			// $("#moRotation").text(info);
 
 			// // Grab the refresh interval from the results
-			info = eventData.interval;
-			$("#moInterval").text(info);
+			//info = eventData.interval;
+			//$("#moInterval").text(info);
 		}
-		setInterval(function(){ $('#shake').shake(); }, 3000);
+		//setInterval(function(){ $('#shake').shake(); }, 3000);
             
         function phoneShake() {
-            game.shakeLeft(70);
+            //game.shakeLeft(70);
         
         }
 

@@ -100,78 +100,127 @@ HCSegment.prototype = {
 				.append(this.imageSegments[i]);
 			$("#tree").append(mynewDiv);
 		}
-		var max_degree = 70;
-		this.shakeLeft(max_degree);
+		var max_degree = 60;
+		var duration = 300;
+		this.shakeLeft(max_degree, duration);
 	},
-	shakeRight: function(max_degree){
+	moveLeft: function(max_degree, duration){
 		var t= this;
-		var number_segments = parseInt(this.segment.number_of_segments, 10)-1;
-		var degrees = Math.floor(max_degree / number_segments);
+		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		max_degree = (max_degree > 60) ? 60 : max_degree;
+		var degrees = Math.floor(max_degree / number_segments );
 		
 		var previous = degrees;
-		var center_y = 150;
-		var center_x = 50;
+		var center_y = 100;
+		var center_x = 38;
 
+		if ( max_degree > 1){
+			for (var i = number_segments -1; i >= 0; i--) {
+				previous += degrees;
+				center_x += 1;
+				center_y += 15;
+				//duration += 10;
+				$("div#divsegment_"+ i)
+					.rotate({
+						duration: duration,
+						center: [center_x+'%', center_y+'%'],
+						animateTo: -previous,
+						easing: $.easing.easeInOutCubic
+				});
+			}
+		}
+	
+	},
+	moveRight: function(max_degree, duration){
+		var t= this;
+		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		max_degree = (max_degree > 60) ? 60 : max_degree;
+		var degrees = Math.floor(max_degree / number_segments );
+		
+		var previous = degrees;
+		var center_y = 100;
+		var center_x = 38;
+
+		if ( max_degree > 1){
+			for (var i = number_segments -1; i >= 0; i--) {
+				previous += degrees;
+				center_x += 1;
+				center_y += 15;
+				//duration += 10;
+				$("div#divsegment_"+ i)
+					.rotate({
+						//angle: previous, 
+						duration: duration,
+						center: [center_x+'%', center_y+'%'],
+						animateTo: previous,
+						easing: $.easing.easeInOutCubic //,
+						//callback: function(){   
+							//t.shakeRight(max_degree/2, duration);
+						 //}
+				});
+			}
+		}
+	
+	},
+	shakeRight: function(max_degree, duration){
+		var t= this;
+		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		var degrees = Math.floor(max_degree / number_segments );
+
+		var previous = degrees;
+		var center_y = 100;
+		var center_x = 38;
 		//console.log(height);
 		//var center_margin = 100;//(100 - center_y) / number_segments;
 		//var centerx_margin = 0;//(1- center_x) / number_segments;
 
 		if ( max_degree > 1){
 			for (var i = number_segments -1; i >= 0; i--) {
-				//console.log(number_segments + " : i: " + i);
 				previous += degrees;
 				center_x += 1;//centerx_margin;
-				center_y += 10;//center_margin;//100%';
-				//console.log($("div#divsegment_"+i-1+" img")[0].height);
+				center_y += 15;
+				duration += 10;
 				$("div#divsegment_"+ i)
 				.rotate({
-					duration:150,
+					duration:duration,
 					center: [center_x+'%', center_y+'%'],
 					animateTo: previous,
 					easing: $.easing.easeInOutCubic,
 					callback: function(){   
-						t.shakeLeft(max_degree/2);
+						t.shakeLeft(max_degree/2, duration);
 					 }
 				});
 			}
-			//console.log($("#divsegment_"+ i));
 		}
 		
 	
 	},
-	shakeLeft: function(max_degree){
+	shakeLeft: function(max_degree, duration){
 		var t= this;
-		var number_segments = parseInt(this.segment.number_of_segments, 10)-1;
-		var degrees = Math.floor(max_degree / number_segments);
+		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		var degrees = Math.floor(max_degree / number_segments );
 		
 		var previous = degrees;
-		var center_y = 150;
-		var center_x = 50;
+		var center_y = 100;
+		var center_x = 38;
 
-		//var center_margin = 100;//(100 - center_y) / number_segments;
-		//var centerx_margin = 0;//(1- center_x) / number_segments;
 		if ( max_degree > 1){
 			for (var i = number_segments -1; i >= 0; i--) {
-				//console.log(number_segments + " : i: " + i);
 				previous += degrees;
-				center_x -= 1;//centerx_margin;
-				center_y += 10;//center_margin;//100%';
-				//console.log($("div#divsegment_"+i-1+" img")[0].height);
+				center_x += 1;
+				center_y += 15;
+				duration += 10;
 				$("div#divsegment_"+ i)
 					.rotate({
-						angle: previous, 
-						duration:150,
+						//angle: previous, 
+						duration: duration,
 						center: [center_x+'%', center_y+'%'],
 						animateTo: -previous,
 						easing: $.easing.easeInOutCubic,
-						// easing: function (x,t,b,c,d){
-						// 	 return c*(t/d)+b;
-						// },
 						callback: function(){   
-							t.shakeRight(max_degree/2);
+							t.shakeRight(max_degree/2, duration);
 						 }
-					});
-				//console.log($("#divsegment_"+ i));
+				});
 			}
 		}
 	
