@@ -1,312 +1,232 @@
-HCTree = function (element) { //renamed arg for readability
+HCSegment = function (element) { //renamed arg for readability
     this.element = (element instanceof $) ? element : $(element);
 };
 
-HCTree.prototype = {
+HCSegment.prototype = {
 	preloadSettings: function(){
 		var that = this;
 		$.ajax({
 			cache: false,
 			url: 'includes/hc_settings.json',
 			success: function(data) {
-				var game_settings = [];
-				$.each( data['settings'], function( key, val ) {
-					game_settings.push({
-						"imagePath" : val.imagePath,
-						"main_background" : val.main_background,
-						"guidelines_header" : val.guidelines_header,
-						"rules_header" : val.rules_header,
-						"shake_text" : val.shake_text
-					});
+				that.settings = [];
+				that.settings.push({
+					"imagePath" : data['settings'][0].imagePath,
+					"main_background" : data['settings'][0].main_background,
+					"guidelines_header" : data['settings'][0].guidelines_header,
+					"rules_header" : data['settings'][0].rules_header,
+					"shake_text" : data['settings'][0].shake_text,
 				});
 				
-				that.settings = game_settings;
-				console.log(that.settings);
-				that.initDOM();
-				//that.downloadImages();
+				that.segment = [];
+				that.segment = data['settings'][0].segment;
+
+				that.preloadImages();
 			}
 		});
 	},
-	downloadImages: function(hangman_type){
-		var available_options = [];
-		$.each( this.imageAdjustments, function (key, val){
-			available_options.push(val.body_type);
-		})
-		//console.log(available_options);
+	preloadImages: function(){
+		var image_srcs = [];
+		for (var i = 1; i <= this.segment.number_of_segments; i++) {
+			image_srcs.push(this.settings[0].imagePath + this.segment.segment_filepath + this.segment.segment_prename + i + this.segment.segment_filetype);
+		}
+		loadImages(this.segment.segment_alternative_text, image_srcs, imagesLoaded);
 		
-		//Check if value exists, otherwise select one at random from list
-		hangman_type = ($.inArray(hangman_type, available_options) >= 0) ? hangman_type : available_options[Math.floor(Math.random()*available_options.length)];
+		var t = this;
 		
-		//console.log(hangman_type);
-		
-		this.hangman_type = hangman_type;
-		this.imagesPath = 'images/';
-		this.filePath = this.imagesPath + hangman_type +'/';
-		
-		this.canvas_background = new Image();
-		this.canvas_background.src = this.imagesPath + this.settings[0].main_background;
-
-	},
-	initDOM: function(){
-		//Initialise fields in DOM
-		//TODO - RP
-		//$('h2#howtoplay').text( this.settings[0].guidelines_header);
-		
-		$('.container').css('background','url(' + this.settings[0].imagePath + this.settings[0].main_background + ') no-repeat center center');
-	},
-	initEvents: function (){
-	},
-	resizeImages: function(){
-	},
-	loadBoard: function(){
-	},
-	loadKeyboard: function(){
-		var valid_keys = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-		
-		//Clear keyboard
-		$('#keyboard').html('');
-
-		//Create an array of keys
-		var items = [];
-		$.each(valid_keys, function( index, value){
-			items.push( "<li><a href='#' id='btn_" + value + "'><div class='letter'>" + value + "</div></a></li>" );
-
-		});
-		$( "<ul/>", {
-			"class": "letters",
-			html: items.join( "" )
-		}).appendTo( "#keyboard" );
-	},
-	leftleg_animation: function(canvas, maxdegrees, mindegrees, degrees, increase_degree){
-		
-	},	
-	drawMan: function(badGuess, winner){
-		var canvas = this.element[0];
-		var ctx = canvas.getContext('2d');
-		var that = this;
-		var start = null;
-	    
-	    //HEAD SETTINGS 
-	    var degrees = 0;
-	    var increase_degree = true;
-	    var maxdegrees = 10;
-		var mindegrees = -10;
-
-		//Clear Canvas
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		ctx.drawImage(this.canvas_background, 0, 0);
-
-		function controlDegrees(){
-			if (increase_degree){
-				degrees++;
-				if (degrees >= maxdegrees){
-					increase_degree = false;
-					maxdegrees = maxdegrees - 2;
-				}
-			} else {
-				degrees--;
-				if (degrees <= mindegrees){
-					increase_degree = true;
-					mindegrees = mindegrees + 2;
-				}
-			}
-			if (mindegrees >= 0 || maxdegrees <= 0){
-				degrees = 0;
-			}
+		//Callback function after images have loaded
+		function imagesLoaded( data ){
+			t.imageSegments = [];
+			t.imageSegments = data;
+			t.initDOM();
 		}
 
-	    function animateHead(timestamp){
-			if (!start) start = timestamp;
-			  	var progress = timestamp - start;
-			  	
-			  	that.head_animation(canvas, maxdegrees, mindegrees, degrees, increase_degree);
-			  	controlDegrees();
-
-				if (progress < 3000) {
-					window.requestAnimationFrame(animateHead);
-			  	}
-		};	
-
-		function animateBody(timestamp){
-			if (!start) start = timestamp;
-			  	var progress = timestamp - start;
-			  	
-			  	that.body_animation(canvas, maxdegrees, mindegrees, degrees, increase_degree);
-			  	controlDegrees();
-
-				if (progress < 3000) {
-					window.requestAnimationFrame(animateBody);
-			  	}
-		};	
+		function loadImages(alttext, image_sources, callback){
+			var loadCounter = 0;
+			var aImages = [];
+			$.each( image_sources, function(i, image){
+				$('<img />').load(function(data){
+					aImages.push(data.currentTarget);
+					loadCounter++;
+					if (loadCounter == image_sources.length){
+						if ( String(typeof(callback)).toUpperCase() == 'FUNCTION' ){
+							aImages.sort(function sortArrayBySource(a, b){
+								var a_src = $(a).attr('src').toUpperCase();
+								var b_src = $(b).attr('src').toUpperCase();
+								return (a_src < b_src) ? -1 : (a_src > b_src) ? 1 : 0;
+								});
+							callback(aImages);
+						}
+					}
+				})
+				.attr({
+					'id' : 'segment_'+i,
+					'src': image,
+					'alt' : alttext,
+					'title': alttext
+				});
+			});
+		}
+	},
+	//Initialise fields in DOM
+	initDOM: function(){
 		
-		function animateLeftLeg(timestamp){
-			if (!start) start = timestamp;
-			  	var progress = timestamp - start;
-			  	
-			  	that.leftleg_animation(canvas, maxdegrees, mindegrees, degrees, increase_degree);
-			  	controlDegrees();
-			  	
-				if (progress < 3000) {
-					window.requestAnimationFrame(animateLeftLeg);
-			  	}
-		};	
-		function animateRightLeg(timestamp){
-			if (!start) start = timestamp;
-			  	var progress = timestamp - start;
-			  	
-			  	that.rightleg_animation(canvas, maxdegrees, mindegrees, degrees, increase_degree);
-			  	controlDegrees();
-			  	
-				if (progress < 3000) {
-					window.requestAnimationFrame(animateRightLeg);
-			  	}
-		};	
-		function animateLeftArm(timestamp){
-			if (!start) start = timestamp;
-			  	var progress = timestamp - start;
-			  	
-			  	that.leftarm_animation(canvas, maxdegrees, mindegrees, degrees, increase_degree);
-			  	controlDegrees();
-			  	
-				if (progress < 3000) {
-					window.requestAnimationFrame(animateLeftArm);
-			  	}
-		};	
-		function animateRightArm(timestamp){
-			if (!start) start = timestamp;
-			  	var progress = timestamp - start;
-			  	
-			  	that.rightarm_animation(canvas, maxdegrees, mindegrees, degrees, increase_degree);
-			  	controlDegrees();
-			  	
-				if (progress < 3000) {
-					window.requestAnimationFrame(animateRightArm);
-			  	}
-		};	
+		//Change background image
+		$('.container').css({
+			'background':'url(' + this.settings[0].imagePath + this.settings[0].main_background + ') no-repeat center center',
+			'background-size' : 'cover'
+		});
+
+		//console.log(this.segment);
 		
+		//Add Items to DOM
+		var newmargin = 0;
+		var tempIndex = parseInt(this.segment.number_of_segments, 10) + 1;
+		
+		for (var i = 0; i < this.imageSegments.length; i++) {
+			//newimage.attr({'alt' : t.segment.segment_alternative_text, 'title' : t.segment.segment_alternative_text });
+			newmargin = (this.imageSegments[i].height * 0.7).toFixed(2);
+			tempIndex--;
+			
+			mynewDiv = $("<div />")
+				.attr('id', "divsegment_" + i)
+				.addClass('ddd')
+				.css({
+					'position' : 'relative',
+					'left' : 0,
+					'margin-top' : '-' + newmargin + 'px',
+					'z-index'	: tempIndex
+				})
+				.append(this.imageSegments[i]);
+			$("#tree").append(mynewDiv);
+		}
+		var max_degree = 60;
+		var duration = 300;
+		this.shakeLeft(max_degree, duration);
+	},
+	moveLeft: function(max_degree, duration){
+		var t= this;
+		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		max_degree = (max_degree > 60) ? 60 : max_degree;
+		var degrees = Math.floor(max_degree / number_segments );
+		
+		var previous = degrees;
+		var center_y = 100;
+		var center_x = 38;
 
-	    if (badGuess > 0){
-	    	this.drawFirstFrame(ctx, badGuess == 1);
-	    }
-	    if (badGuess > 1){
-	    	this.drawBase(ctx, badGuess == 2);
-	    }
-	    if (badGuess > 2){
-	    	this.drawLever(ctx, badGuess == 3);
-	    }
-	    if (badGuess > 3){
-	    	this.drawCorners(ctx, badGuess == 4);
-	   	}
-	    if (badGuess > 4){
-	    	this.drawNoose(ctx, badGuess == 5);
-	    }
-	    
-	    //SEQUENCE is IMPORTANT!
-	    //Draw left leg 
-	    if (badGuess > 7){
-	    	if (badGuess == 8 ) {
-	    		window.requestAnimationFrame(animateLeftLeg);
-	    	} else {
-	    		this.drawLeftLeg(ctx);
-	    	}
-	    }
-	    //Draw right leg 
-	    if (badGuess > 8){
-	    	if (badGuess == 9 ) {
-	    		window.requestAnimationFrame(animateRightLeg);
-	    	} else {
-	    		this.drawRightLeg(ctx);
-	    	}
-	    }
-
-	    //Draw body 2nd to last
-	    if (badGuess > 6){
-	    	if (badGuess == 7 ) {
-	    		window.requestAnimationFrame(animateBody);
-	    	} else {
-	    		this.drawBody(ctx, badGuess == 7);
-	    	}
-	    }
-
-	    //Draw left arm
-	    if (badGuess > 9){
-	    	if (badGuess == 10 ) {
-	    		window.requestAnimationFrame(animateLeftArm);
-	    	} else {
-	    		this.drawLeftArm(ctx);
-	    	}
-	    }
-	    
-	    //Draw right arm
-	    if (badGuess > 10){
-	    	if (badGuess == 11 ) {
-	    		window.requestAnimationFrame(animateRightArm);
-	    	} else {
-	    		this.drawRightArm(ctx);
-	    	}
-	    }
-	    
-	    //Draw head last
-	    if (badGuess > 5){
-	    	if (badGuess == 6 ) {
-	    		window.requestAnimationFrame(animateHead);
-	    	} else {
-	    		this.drawHead(ctx);
-	    	}
-	    }
-	}
-};
-
-
-function drawLineAnimation(ctx, startX, startY, endX, endY, colour, lineThickness){
-	var amount = 0;
-
-	ctx.beginPath();
-	ctx.lineWidth = lineThickness;
-	ctx.strokeStyle = colour;
-	ctx.moveTo(startX,startY);
-	var inaction = 	false;
+		if ( max_degree > 1){
+			for (var i = number_segments -1; i >= 0; i--) {
+				previous += degrees;
+				center_x += 1;
+				center_y += 15;
+				//duration += 10;
+				$("div#divsegment_"+ i)
+					.rotate({
+						duration: duration,
+						center: [center_x+'%', center_y+'%'],
+						animateTo: -previous,
+						easing: $.easing.easeInOutCubic
+				});
+			}
+		}
 	
-	if (!inaction){
-	    inaction = true;
-		var temptimer = setInterval(function(){
-		    amount += 0.05; // change to alter duration
-		    if (amount > 1) {
-		    	amount = 1; 
-		    	inaction = false;
-		    	clearTimeout(temptimer);
-		    }
-		    // lerp : a  + (b - a) * f
-		    //console.log("STATT X " + (startX + (endX - startX) * amount));
-		    //console.log("START UY " + (startY + (endY - startY) * amount));
-		    ctx.lineTo(startX + (endX - startX) * amount, 
-		    			startY + (endY - startY) * amount);
-		    ctx.closePath();
-		    ctx.miterLimit = 1;
-		    ctx.stroke();
-		},10);
+	},
+	moveRight: function(max_degree, duration){
+		var t= this;
+		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		max_degree = (max_degree > 60) ? 60 : max_degree;
+		var degrees = Math.floor(max_degree / number_segments );
+		
+		var previous = degrees;
+		var center_y = 100;
+		var center_x = 38;
+
+		if ( max_degree > 1){
+			for (var i = number_segments -1; i >= 0; i--) {
+				previous += degrees;
+				center_x += 1;
+				center_y += 15;
+				//duration += 10;
+				$("div#divsegment_"+ i)
+					.rotate({
+						//angle: previous, 
+						duration: duration,
+						center: [center_x+'%', center_y+'%'],
+						animateTo: previous,
+						easing: $.easing.easeInOutCubic //,
+						//callback: function(){   
+							//t.shakeRight(max_degree/2, duration);
+						 //}
+				});
+			}
+		}
+	
+	},
+	shakeRight: function(max_degree, duration){
+		var t= this;
+		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		var degrees = Math.floor(max_degree / number_segments );
+
+		var previous = degrees;
+		var center_y = 100;
+		var center_x = 38;
+		//console.log(height);
+		//var center_margin = 100;//(100 - center_y) / number_segments;
+		//var centerx_margin = 0;//(1- center_x) / number_segments;
+
+		if ( max_degree > 1){
+			for (var i = number_segments -1; i >= 0; i--) {
+				previous += degrees;
+				center_x += 1;//centerx_margin;
+				center_y += 15;
+				duration += 10;
+				$("div#divsegment_"+ i)
+				.rotate({
+					duration:duration,
+					center: [center_x+'%', center_y+'%'],
+					animateTo: previous,
+					easing: $.easing.easeInOutCubic,
+					callback: function(){   
+						t.shakeLeft(max_degree/2, duration);
+					 }
+				});
+			}
+		}
+		
+	
+	},
+	shakeLeft: function(max_degree, duration){
+		var t= this;
+		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		var degrees = Math.floor(max_degree / number_segments );
+		
+		var previous = degrees;
+		var center_y = 100;
+		var center_x = 38;
+
+		if ( max_degree > 1){
+			for (var i = number_segments -1; i >= 0; i--) {
+				previous += degrees;
+				center_x += 1;
+				center_y += 15;
+				duration += 10;
+				$("div#divsegment_"+ i)
+					.rotate({
+						//angle: previous, 
+						duration: duration,
+						center: [center_x+'%', center_y+'%'],
+						animateTo: -previous,
+						easing: $.easing.easeInOutCubic,
+						callback: function(){   
+							t.shakeRight(max_degree/2, duration);
+						 }
+				});
+			}
+		}
+	
 	}
-}
 
-function drawLine(ctx, startX, startY, endX, endY, colour, lineThickness){
-	ctx.beginPath();
-	ctx.lineWidth = lineThickness;
-	ctx.strokeStyle = colour;
-	ctx.moveTo(startX, startY);
-	ctx.lineTo(endX, endY);
-	ctx.closePath();
-	ctx.miterLimit = 1;
-	ctx.stroke();
-}
+		
+	
 
-/*
- * Starts the game
- */
-function start(){
-}
-
-/*
- * Resets the game board
- */
-function restart(){
-}
+};
