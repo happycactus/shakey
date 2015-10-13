@@ -96,8 +96,21 @@ HCSegment.prototype = {
 					'left' : 0,
 					'margin-top' : '-' + newmargin + 'px',
 					'z-index'	: tempIndex
-				})
-				.append(this.imageSegments[i]);
+				});
+			// myornamentDiv = $("<div />")
+			// 	.attr('id', 'ornament_'+i)
+			// 	.addClass('gravity_pull')
+			// 	.css({
+			// 		'position' : 'relative',
+			// 		'left'	: '10%',
+
+
+			// 	});
+			//Only add to certain elements
+			//.append(mynewDiv);
+
+
+			mynewDiv.append(this.imageSegments[i]);
 			$("#tree").append(mynewDiv);
 		}
 		var max_degree = 60;
@@ -146,17 +159,19 @@ HCSegment.prototype = {
 				previous += degrees;
 				center_x += 1;
 				center_y += 15;
-				//duration += 10;
 				$("div#divsegment_"+ i)
 					.rotate({
-						//angle: previous, 
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
 						animateTo: previous,
-						easing: $.easing.easeInOutCubic //,
-						//callback: function(){   
-							//t.shakeRight(max_degree/2, duration);
-						 //}
+						easing: $.easing.easeInOutCubic 
+				});
+				$("div#divsegment_"+ i + " ornament")
+					.rotate({
+						duration: duration,
+						center: [center_x+'%', center_y+'%'],
+						animateTo: 0,
+						easing: $.easing.easeInOutCubic 
 				});
 			}
 		}
