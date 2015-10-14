@@ -79,13 +79,12 @@ HCSegment.prototype = {
 
 		//Add Items to DOM
 		var newmargin = 0;
+		var currentHeight = 0;
 		var tempIndex = parseInt(this.segment.number_of_segments, 10) + 1;
 		
 		for (var i = 0; i < this.imageSegments.length; i++) {
-			var currentHeight = this.imageSegments[i].height;
-			//console.log(this.imageSegments[i]);
+			currentHeight = this.imageSegments[i].height;
 			newmargin = (i === 0) ? 0 : (currentHeight * 0.75).toFixed(2);
-			//console.log(newmargin);
 			tempIndex--;
 			
 			mynewDiv = $("<div />")
