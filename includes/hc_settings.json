@@ -10,10 +10,21 @@
             "segment" : 
                 {
                     "number_of_segments" : "7",
-                    "segment_filepath" : "segments/",
-                    "segment_alternative_text" : "SHAKE ME",
-                    "segment_prename" : "segment_",
-                    "segment_filetype" : ".png"
+                    "filepath" : "segments/",
+                    "alternative_text" : "SHAKE ME",
+                    "prename" : "segment_",
+                    "filetype" : ".png",
+                    "height" : "190",
+                    "width" : "455"
+                },
+            "decoration":
+                {
+                    "filepath" : "decorations/",
+                    "alternative_text" : "Fragile",
+                    "prename" : "orn_",
+                    "filetype" : ".png",
+                    "height" : "50",
+                    "width" : "50"
                 }
             
         }

@@ -58,16 +58,9 @@
 		//Allow only one click event
 		var inaction = false;
 		
-		// var doc_width = $(document).width();
-			
-		// $('.container').width( doc_width );
-		
 		//WINDOW RESIZE
-		// $(window).resize(function(){
-		// 	var doc_width = $(document).width();
-
-		// 	$('.container').width( doc_width );
-		// });
+		$(window).resize(function(){
+		});
 
 	});
 	
@@ -75,21 +68,5 @@
 	//	event.preventDefault();
 		
 	// });
-	
-	
-	//function loadSettings(){
-	//	$.ajax({
-	//		cache: false,
-	//		url: 'includes/hc_settings.json',
-	//		success: function(data) {
-	//			$.each( data, function( key, val ) {
-	//				//Do something
-	//			});
-	//		},
-	//		error: function(data){
-	//			//File is empty 
-	//		}
-	//	});
-	//}
 	
 })(jQuery);
