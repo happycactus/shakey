@@ -13,9 +13,7 @@
                     "segment_filepath" : "segments/",
                     "segment_alternative_text" : "SHAKE ME",
                     "segment_prename" : "segment_",
-                    "segment_filetype" : ".png",
-                    "top_src" : "top.png",
-                    "trunk_src" : "trunk.png"
+                    "segment_filetype" : ".png"
                 }
             
         }

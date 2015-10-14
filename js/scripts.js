@@ -1,17 +1,11 @@
 (function($){
-	//console.log( $('#intro_board').height() );
-	//$.getScript("js/game.js");
 	//GLOBAL VARIABLES
-	//var word = $('#mystery_word'),
-    //letters = $('#letters'),
-   
-
 	var game = new HCSegment('#segment');
 	game.preloadSettings();
 
 	
 	$(document).ready(function(){
-		
+		//DETECT orientation and create action
 		if (window.DeviceOrientationEvent) {
 			// Listen for the deviceorientation event and handle the raw data
 			//window.addEventListener('devicemotion', deviceMotionHandler);
@@ -35,53 +29,18 @@
 					//$("#moRotation").text(tiltLR);
 				}
 
-				// call our orientation event handler
-				//devOrientationHandler(tiltLR, tiltFB, dir);
 			}, false);
 		} else {
 			$("#doEvent").text("Not supported.");
 		}
 
-		//function devOrientationHandler(tiltLR, tiltFB, dir){
-		 	//alert(tiltLR + " : " + tiltFB + " : " + dir);
-		//}
-
-		function deviceMotionHandler(eventData) {
-			var info, xyz = "[X, Y, Z]";
-			//console.log(eventData.acceleration.y);
-			//$("#moAccel").text("event acceleration: " + eventData.acceleration.x);
-			//console.log( "alpha: " + Math.round(event.rotationRate.alpha) );
-			//$("#dmEvent").text("alpha: " + Math.round(event.rotationRate.alpha));
-			// // Grab the acceleration from the results
-			// var acceleration = eventData.acceleration;
-			// info = xyz.replace("X", Math.round(acceleration.x),2);
-			// info = info.replace("Y", Math.round(acceleration.y),2);
-			// info = info.replace("Z", Math.round(acceleration.z),2);
-			// $("#moAccel").text(info);
-
-			// // Grab the acceleration including gravity from the results
-			// acceleration = eventData.accelerationIncludingGravity;
-			// info = xyz.replace("X", Math.round(acceleration.x),2);
-			// info = info.replace("Y", Math.round(acceleration.y),2);
-			// info = info.replace("Z", Math.round(acceleration.z),2);
-			// $("#moAccelGrav").text(info);
-
-			// if ((Math.round(acceleration.x),2) === 2){
-			// 	//alert(Math.round(acceleration.x),2);
-			// 	//game.moveLeft( Math.round(acceleration.x),2 );
-			// }
-			// // Grab the rotation rate from the results
-			// var rotation = eventData.rotationRate;
-			// info = xyz.replace("X", Math.round(rotation.alpha),2);
-			// info = info.replace("Y", Math.round(rotation.beta),2);
-			// info = info.replace("Z", Math.round(rotation.gamma),2);
-			// $("#moRotation").text(info);
-
-			// // Grab the refresh interval from the results
-			//info = eventData.interval;
-			//$("#moInterval").text(info);
-		}
-		//setInterval(function(){ $('#shake').shake(); }, 3000);
+		// setTimeout(function(){
+		// 	$('#tree').click();
+		// }, 3000);
+		// $('#tree').on('click', function(){
+		// 	game.shakeLeft(60, 300);
+		// });
+			
             
         // function phoneShake() {
         //     //game.shakeLeft(70);
