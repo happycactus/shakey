@@ -24,25 +24,37 @@
 
 
 
-                if (tiltLR === 0) {
-                    orientation = 'center';
-                    moveAllowed = true;
+                // if (tiltLR === 0) {
+                //    // orientation = 'center';
+                //     moveAllowed = true;
+                // }
+
+                // if (tiltLR < 0) {
+                // 	//orientation = 'left';
+
+                //     game.moveLeft(-tiltLR, 2);
+
+                // } else if (tiltLR > 0) {
+                // 	//orientation = 'right';
+                //     game.moveRight(tiltLR, 2);
+
+
+                // }
+                
+
+
+                //Check forward tilt
+                if (tiltFB < 90){ //tilted forward - no nothing
+                    if (tiltLR < 0) {
+                        //move left
+                        game.moveLeft(-tiltLR, 2);
+                    }  else {
+                        game.moveRight(tiltLR, 2);
+                    }   
                 }
-
-                if (tiltLR < 0) {
-                	orientation = 'left';
-
-                    game.moveLeft(-tiltLR, 2);
-
-                } else if (tiltLR > 0) {
-                	orientation = 'right';
-                    game.moveRight(tiltLR, 2);
-
-
-                    //$("#moRotation").text(tiltLR);
-                }
-
-                $("#answer").text(tiltLR + ': ' + orientation+' - '+moveAllowed); // + " : " + tiltFB + " : " + dir);
+                
+                
+                $("#answer").text(tiltFB + " : " + tiltLR + ': ' + orientation+' - '+moveAllowed); // + " : " + tiltFB + " : " + dir);
 
             }, false);
         } else {

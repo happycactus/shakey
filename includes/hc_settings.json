@@ -19,6 +19,7 @@
                 },
             "decoration":
                 {
+                    "number_of_variants" : "2",
                     "filepath" : "decorations/",
                     "alternative_text" : "Fragile",
                     "prename" : "orn_",

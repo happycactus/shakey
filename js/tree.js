@@ -5,6 +5,9 @@ HCSegment = function (element) { //renamed arg for readability
 HCSegment.prototype = {
 	preloadSettings: function(){
 		var that = this;
+		that.segment = [];
+		that.imageSegments = [];
+		that.imageDecorations = [];
 		$.ajax({
 			cache: false,
 			url: 'includes/hc_settings.json',
@@ -18,54 +21,81 @@ HCSegment.prototype = {
 					"shake_text" : data['settings'][0].shake_text,
 				});
 				
-				that.segment = [];
-				that.imageSegments = [];
-				that.imageDecorations = [];
+				
 				that.segment = data['settings'][0].segment;
 				that.decoration = data['settings'][0].decoration;
-				that.preloadSegmentImages(that.settings[0].imagePath, that.segment);
-				that.preloadDecorationImages(that.settings[0].imagePath, that.segment.number_of_segments, that.decoration);
+				that.preloadImages(that.settings[0].imagePath, that.segment, that.decoration);
+				//that.preloadDecorationImages(that.settings[0].imagePath, that.decoration);
 			}
 		});
 	},
-	preloadSegmentImages: function(imagePath, segment_settings){
+	preloadImages: function(imagePath, segment_settings, deco_settings){
 		var that = this;
-		var image_srcs = [];
+		var images = [];
+		var randomid = 0;
+		var aVariants = [];
+		
+		//Create segments
 		for (var i = 1; i <= segment_settings.number_of_segments; i++) {
-			image_srcs.push(imagePath + segment_settings.filepath + segment_settings.prename + i + segment_settings.filetype);
+			images.push({"imageType" : "segment", "id" : i, "height":segment_settings.height, "width": segment_settings.width, "alt" : segment_settings.alternative_text, "src" : imagePath + segment_settings.filepath + segment_settings.prename + i + segment_settings.filetype});
 		}
-		that.loadImages(segment_settings.height, segment_settings.width, segment_settings.alternative_text, image_srcs, imagesLoaded);
+
+		//Create ornaments
+		for (var j= 1; j <= deco_settings.number_of_variants; j++) {
+			aVariants.push(j);
+		}
+		for (var x = 1; x <= parseInt(deco_settings.number_of_variants, 10) * 3; x++) {
+			randomid = aVariants[Math.floor(Math.random() * aVariants.length)];
+			images.push({"imageType" : "decoration", "id" : x, "height" : deco_settings.height, "width" : deco_settings.width, "alt": deco_settings.alternative_text, "src" : imagePath + deco_settings.filepath + deco_settings.prename + randomid + deco_settings.filetype});
+		}
+		
+		console.log(images);
+		//that.loadImages(segment_settings.height, segment_settings.width, segment_settings.alternative_text, image_srcs, imagesLoaded);
+		that.loadImages(images, imagesLoaded);
 		
 		//Callback function after images have loaded
 		function imagesLoaded( data ){
-			that.imageSegments = data;
 			that.initDOM();
 		}
 
 	},
-	preloadDecorationImages: function(imagePath, number_of_segments, deco_settings){
+	preloadDecorationImages: function(imagePath, deco_settings){
 		var that = this;
+		var randomid = 0;
 		var image_srcs = [];
-		for (var i = 1; i <= number_of_segments * 3; i++) {
-			image_srcs.push(imagePath + deco_settings.filepath + deco_settings.prename + i + deco_settings.filetype);
+		var aVariants = [];
+		
+		for (var i = 1; i <= deco_settings.number_of_variants; i++) {
+			aVariants.push(i);
 		}
-		that.loadImages(deco_settings.height, deco_settings.width, deco_settings.alternative_text, image_srcs, imagesLoaded);
+		for (var x = 1; x <= parseInt(deco_settings.number_of_variants, 10) * 3; x++) {
+			randomid = aVariants[Math.floor(Math.random() * aVariants.length)];
+			image_srcs.push(imagePath + deco_settings.filepath + deco_settings.prename + randomid + deco_settings.filetype);
+		}
+		
+		//that.loadImages(deco_settings.height, deco_settings.width, deco_settings.alternative_text, image_srcs, imageDecorsLoaded);
 		
 		//Callback function after images have loaded
-		function imagesLoaded( data ){
+		function imageDecorsLoaded( data ){
 			that.imageDecorations = data;
-			console.log(that.imageDecorations);
 			that.initDOM();
 		}
 
 	},
-	loadImages: function(segment_height, segment_width, alttext, image_sources, callback){
+	loadImages: function(image_sources, callback){
 		var that = this;
+		var currentid = 0;
 		var loadCounter = 0;
 		var aImages = [];
 		$.each( image_sources, function(i, image){
+			currentID = image.imageType + image.id;
 			$('<img />').load(function(data){
 				aImages.push(data.currentTarget);
+				if (image.imageType == 'segment'){
+					that.imageSegments.push(data.currentTarget);
+				} else {
+					that.imageDecorations.push(data.currentTarget);
+				}
 				loadCounter++;
 				if (loadCounter == image_sources.length){
 					if ( String(typeof(callback)).toUpperCase() == 'FUNCTION' ){
@@ -79,16 +109,15 @@ HCSegment.prototype = {
 				}
 			})
 			.attr({
-				'id' : 'segment_'+i,
-				'src': image,
-				'alt' : alttext,
-				'title': alttext,
-				'height' : segment_height,
-				'width'  : segment_width
+				'id' : currentID,
+				'src': image.src,
+				'alt' : image.alt,
+				'title': image.alt,
+				'height' : image.height,
+				'width'  : image.width
 			});
 		});
 	},
-	
 	//Initialise fields in DOM
 	initDOM: function(){
 		console.log('init time');
@@ -104,6 +133,7 @@ HCSegment.prototype = {
 		var tempIndex = parseInt(this.segment.number_of_segments, 10) + 1;
 		var margin_overlap = 0.75;
 		
+		console.log(this.imageSegments);
 		for (var i = 0; i < this.imageSegments.length; i++) {
 			currentHeight = this.imageSegments[i].height;
 			newmargin = (i === 0) ? 0 : (currentHeight * margin_overlap).toFixed(2);
@@ -163,8 +193,8 @@ HCSegment.prototype = {
 		return currentImg;
 	},
 	moveLeft: function(max_degree, duration){
-		var t= this;
-		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		var that = this;
+		var number_segments = parseInt(that.segment.number_of_segments, 10)-1;
 		max_degree = (max_degree > 60) ? 60 : max_degree;
 		var degrees = Math.floor(max_degree / number_segments );
 		
@@ -190,8 +220,8 @@ HCSegment.prototype = {
 	
 	},
 	moveRight: function(max_degree, duration){
-		var t= this;
-		var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+		var that = this;
+		var number_segments = parseInt(that.segment.number_of_segments, 10)-1;
 		max_degree = (max_degree > 60) ? 60 : max_degree;
 		var degrees = Math.floor(max_degree / number_segments );
 		
