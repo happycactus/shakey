@@ -466,13 +466,7 @@ a.button:hover {
         position: absolute;
         bottom: 0;
     }
-    #tree .segment,
-    #tree .segment img {
-        width: auto;
-        max-width: 100%;
-        min-height: 190px;
-        height: auto;
-    }
+
 }
 
 
@@ -484,11 +478,6 @@ a.button:hover {
         width: auto;
         max-width: 960px;
         transition: .35s;
-    }
-    #tree .segment,
-    #tree .segment img {
-        width: auto;
-        height: 190px;
     }
 }
 
