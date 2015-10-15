@@ -157,7 +157,7 @@ HCSegment.prototype = {
 			.addClass('ornament')
 			.css({
 				'position' : 'absolute',
-				'left'	: '10%',
+				'left'	: '49%',
 				'bottom' : '1%'
 			})
 			.append(this.imageDecorations[inner]);
