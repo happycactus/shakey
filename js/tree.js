@@ -195,10 +195,10 @@ HCSegment.prototype = {
 						animateTo: previous,
 						easing: $.easing.easeInOutCubic
 				});
-				if (previous == max_degree - 1) {
-					this.checkCount++;
-					console.log(this.checkCount);
-				}
+				// if (previous == max_degree - 1) {
+				// 	this.checkCount++;
+				// 	console.log(this.checkCount);
+				// }
 			}
 		}
 	
@@ -233,10 +233,10 @@ HCSegment.prototype = {
 						animateTo: -previous,
 						easing: $.easing.easeInOutCubic
 				});
-				if (previous == max_degree - 1) {
-					this.checkCount--;
-					console.log(this.checkCount);
-				}
+				// if (previous == max_degree - 1) {
+				// 	this.checkCount--;
+				// 	console.log(this.checkCount);
+				// }
 			}
 		}
 
