@@ -466,8 +466,8 @@ a.button:hover {
         position: absolute;
         bottom: 0;
     }
-    #tree div,
-    #tree div img {
+    #tree .segment,
+    #tree .segment img {
         width: auto;
         max-width: 100%;
         min-height: 190px;
@@ -485,8 +485,8 @@ a.button:hover {
         max-width: 960px;
         transition: .35s;
     }
-    #tree div,
-    #tree div img {
+    #tree .segment,
+    #tree .segment img {
         width: auto;
         height: 190px;
     }
