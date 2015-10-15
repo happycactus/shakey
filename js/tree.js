@@ -100,7 +100,7 @@ HCSegment.prototype = {
 	//Initialise fields in DOM
 	initDOM: function(){
 		//Change background image
-		$('.container').css({
+		$('body').css({
 			'background':'url(' + this.settings[0].imagePath + this.settings[0].main_background + ') no-repeat center center',
 			'background-size' : 'cover'
 		});
