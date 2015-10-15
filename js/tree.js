@@ -143,7 +143,7 @@ HCSegment.prototype = {
 					'position' : 'absolute',
 					'width' : '100%',
 					'text-align' : 'center',
-					'bottom' : '2%'
+					'bottom' : '5%'
 				});
 			//Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
 			for (var inner = i; inner < (i+i); inner++) {

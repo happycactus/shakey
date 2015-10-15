@@ -460,9 +460,9 @@ a.button:hover {
         position: absolute;
     }
     #tree {
-        width: 100%;
+
         transition: .35s;
-        max-width: auto;
+
         position: absolute;
         bottom: 0;
     }
@@ -481,7 +481,7 @@ margin: 0 15px;
 @media only screen and (min-width: 480px) {
     #tree {
         margin: 0 auto;
-        width: auto;
+
         max-width: 960px;
         transition: .35s;
     }
