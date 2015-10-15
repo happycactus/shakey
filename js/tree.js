@@ -99,6 +99,8 @@ HCSegment.prototype = {
 	},
 	//Initialise fields in DOM
 	initDOM: function(){
+		        this.checkCount = 0;
+
 		//Change background image
 		$('body').css({
 			'background':'url(' + this.settings[0].imagePath + this.settings[0].main_background + ') no-repeat center center',
@@ -192,6 +194,10 @@ HCSegment.prototype = {
 						animateTo: -previous,
 						easing: $.easing.easeInOutCubic
 				});
+					        if (previous == max_degree - 1) {
+					    this.checkCount++;
+					    console.log(this.checkCount);
+					}
 			}
 		}
 	
@@ -218,6 +224,10 @@ HCSegment.prototype = {
 						animateTo: previous,
 						easing: $.easing.easeInOutCubic 
 				});
+					        if (previous == max_degree - 1) {
+					    this.checkCount--;
+					    console.log(this.checkCount);
+					}
 				// $("div#divsegment_"+ i + " ornament")
 				// 	.rotate({
 				// 		duration: duration,
@@ -226,16 +236,6 @@ HCSegment.prototype = {
 				// 		easing: $.easing.easeInOutCubic 
 				// });
 			}
-		}
-	
-	},
-
-	dropGift: function (degree){
-		var MAX_DEGREE = 60;
-		var allowDrop = false;
-		if (degree == MAX_DEGREE){
-			var dropit = 'dropped';
-			return dropit;
 		}
 
 	},
