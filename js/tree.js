@@ -5,7 +5,6 @@ HCSegment = function (element) { //renamed arg for readability
 HCSegment.prototype = {
 	preloadSettings: function(){
 		var that = this;
-		that.segment = [];
 		that.imageSegments = [];
 		that.imageDecorations = [];
 		$.ajax({
@@ -20,9 +19,7 @@ HCSegment.prototype = {
 					"rules_header" : data['settings'][0].rules_header,
 					"shake_text" : data['settings'][0].shake_text,
 				});
-				
-				
-				that.segment = data['settings'][0].segment;
+								
 				that.preloadImages(that.settings[0].imagePath, data['settings'][0].segment, data['settings'][0].decoration);
 			}
 		});
@@ -102,7 +99,6 @@ HCSegment.prototype = {
 	},
 	//Initialise fields in DOM
 	initDOM: function(){
-		console.log('init time');
 		//Change background image
 		$('.container').css({
 			'background':'url(' + this.settings[0].imagePath + this.settings[0].main_background + ') no-repeat center center',
@@ -112,10 +108,9 @@ HCSegment.prototype = {
 		//Add Items to DOM
 		var newmargin = 0;
 		var currentHeight = 0;
-		var tempIndex = parseInt(this.segment.number_of_segments, 10) + 1;
+		var tempIndex = this.imageSegments.length + 1;
 		var margin_overlap = 0.75;
 		
-		console.log(this.imageSegments);
 		for (var i = 0; i < this.imageSegments.length; i++) {
 			currentHeight = this.imageSegments[i].height;
 			newmargin = (i === 0) ? 0 : (currentHeight * margin_overlap).toFixed(2);
@@ -149,7 +144,7 @@ HCSegment.prototype = {
 			//mynewDiv.append(myornamentDiv);
 			$("#tree").append(mynewDiv);
 		}
-		console.log(this.imageDecorations);
+		//console.log(this.imageDecorations);
 		//this.createDecorations(this.segment.number_of_segments);
 		var max_degree = 60;
 		var duration = 300;
@@ -176,7 +171,7 @@ HCSegment.prototype = {
 	},
 	moveLeft: function(max_degree, duration){
 		var that = this;
-		var number_segments = parseInt(that.segment.number_of_segments, 10)-1;
+		var number_segments = that.imageSegments.length - 1;
 		max_degree = (max_degree > 60) ? 60 : max_degree;
 		var degrees = Math.floor(max_degree / number_segments );
 		
@@ -203,7 +198,7 @@ HCSegment.prototype = {
 	},
 	moveRight: function(max_degree, duration){
 		var that = this;
-		var number_segments = parseInt(that.segment.number_of_segments, 10)-1;
+		var number_segments = that.imageSegments.length - 1;
 		max_degree = (max_degree > 60) ? 60 : max_degree;
 		var degrees = Math.floor(max_degree / number_segments );
 		
@@ -234,15 +229,48 @@ HCSegment.prototype = {
 		}
 	
 	},
-
 	dropGift: function (degree){
+		var MAX_DEGREE = 60;
 		var allowDrop = false;
-		if (degree == max_degree){
+		if (degree == MAX_DEGREE){
 			var dropit = 'dropped';
-			return dropit
+			return dropit;
 		}
 
 	},
+	shakeDirection: function(direction, max_degree, duration){
+		var MAX_DEGREES = 60;
+		var that = this;
+		
+		if ( max_degree > 1 && max_degree <= MAX_DEGREES){
+			
+			var number_segments = that.imageSegments.length - 1;
+			var degrees = Math.floor(max_degree / number_segments );
+			
+			var previous = degrees;
+			var center_y = 100;
+			var center_x = 38;
+			
+			for (var i = number_segments -1; i >= 0; i--) {
+				previous += degrees;
+				center_x += 1;
+				center_y += 15;
+				duration += 10;
+				
+				$("div#divsegment_"+ i + " img")
+					.rotate({
+						duration:duration,
+						center: [center_x+'%', center_y+'%'],
+						animateTo: (direction == 'left') ? -previous : previous,
+						easing: $.easing.easeInOutCubic,
+						callback: function(){
+							direction = (direction == 'left') ? 'right' : 'left';
+							that.shakeDirection(direction, max_degree/2, duration);
+						}
+					});
+			}
+		}
+	}
 
 	// shakeRight: function(max_degree, duration){
 	// 	var t= this;
@@ -305,41 +333,6 @@ HCSegment.prototype = {
 	// 	}
 	
 	// },
-	shakeDirection: function(direction, max_degree, duration){
-		var MAX_DEGREES = 60;
-		var that = this;
-		
-		if ( max_degree > 1 && max_degree <= MAX_DEGREES){
-			
-			var number_segments = parseInt(that.segment.number_of_segments, 10)-1;
-			var degrees = Math.floor(max_degree / number_segments );
-			
-			var previous = degrees;
-			var center_y = 100;
-			var center_x = 38;
-			
-			for (var i = number_segments -1; i >= 0; i--) {
-				previous += degrees;
-				center_x += 1;
-				center_y += 15;
-				duration += 10;
-				
-				$("div#divsegment_"+ i + " img")
-					.rotate({
-						duration:duration,
-						center: [center_x+'%', center_y+'%'],
-						animateTo: (direction == 'left') ? -previous : previous,
-						easing: $.easing.easeInOutCubic,
-						callback: function(){   
-							direction = (direction == 'left') ? 'right' : 'left';
-							that.shakeDirection(direction, max_degree/2, duration);
-						}
-					});
-			}
-		}
-	}
-
-		
 	
 
 };
