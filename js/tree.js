@@ -152,13 +152,14 @@ HCSegment.prototype = {
 		//this.shakeDirection("left", max_degree, duration);
 	},
 	createOrnament: function(inner){
+		
 		var myornamentDiv = $("<div />")
 			//.attr('id', 'ornament_'+i)
 			.addClass('ornament')
 			.css({
 				'position' : 'absolute',
 				'left'	: '49%',
-				'bottom' : '1%'
+				'bottom' : '2%'
 			})
 			.append(this.imageDecorations[inner]);
 		return myornamentDiv;
@@ -180,11 +181,18 @@ HCSegment.prototype = {
 				center_x += 1;
 				center_y += 15;
 				//duration += 10;
-				$("#segment_"+ i + " img")
+				$("#segment_"+ i)
 					.rotate({
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
 						animateTo: -previous,
+						easing: $.easing.easeInOutCubic
+				});
+				$("#segment_"+ i + " .ornament img")
+					.rotate({
+						duration: duration,
+						center: [center_x+'%', center_y+'%'],
+						animateTo: previous,
 						easing: $.easing.easeInOutCubic
 				});
 				if (previous == max_degree - 1) {
@@ -211,7 +219,7 @@ HCSegment.prototype = {
 				previous += degrees;
 				center_x += 1;
 				center_y += 15;
-				$("#segment_"+ i + " img")
+				$("#segment_"+ i)
 					.rotate({
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
@@ -222,7 +230,7 @@ HCSegment.prototype = {
 					.rotate({
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
-						animateTo: previous,
+						animateTo: -previous,
 						easing: $.easing.easeInOutCubic
 				});
 				if (previous == max_degree - 1) {
