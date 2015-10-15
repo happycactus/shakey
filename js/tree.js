@@ -103,7 +103,7 @@ HCSegment.prototype = {
 	},
 	//Initialise fields in DOM
 	initDOM: function(){
-		        this.checkCount = 0;
+		this.checkCount = 0;
 
 		//Change background image
 		$('body').css({
@@ -143,19 +143,15 @@ HCSegment.prototype = {
 				ornamentCount++;
 			}
 
-			//mynewDiv.append(myornamentDiv);
 			$("#tree").append(mynewDiv);
 		}
 
-		//console.log(this.imageDecorations);
 		//this.createDecorations(this.segment.number_of_segments);
 		var max_degree = 60;
 		var duration = 300;
 		//this.shakeDirection("left", max_degree, duration);
 	},
-	
 	createOrnament: function(inner){
-		//Only add to certain elements
 		var myornamentDiv = $("<div />")
 			//.attr('id', 'ornament_'+i)
 			.addClass('ornament')
@@ -166,22 +162,12 @@ HCSegment.prototype = {
 			})
 			.append(this.imageDecorations[inner]);
 		return myornamentDiv;
-		// var currentImg = $('<img />');
-		// currentImg.load(function(data){ })
-		// 	.attr({
-		// 		'id' : 'segment_'+i,
-		// 		'src': 'http://192.168.16.78/games/shakey/images/decorations/orn_1.png',
-		// 		'alt' : 'Ornament',
-		// 		'title': 'Ornament',
-		// 		'height' : 190,
-		// 		'width'  : 455
-		// 	});
-		// return currentImg;
 	},
 	moveLeft: function(max_degree, duration){
+		var MAX_DEGREES = 60;
 		var that = this;
 		var number_segments = that.imageSegments.length - 1;
-		max_degree = (max_degree > 60) ? 60 : max_degree;
+		max_degree = (max_degree > MAX_DEGREES) ? MAX_DEGREES : max_degree;
 		var degrees = Math.floor(max_degree / number_segments );
 		
 		var previous = degrees;
@@ -194,25 +180,26 @@ HCSegment.prototype = {
 				center_x += 1;
 				center_y += 15;
 				//duration += 10;
-				$("div#divsegment_"+ i + " img")
+				$("#segment_"+ i + " img")
 					.rotate({
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
 						animateTo: -previous,
 						easing: $.easing.easeInOutCubic
 				});
-					        if (previous == max_degree - 1) {
-					    this.checkCount++;
-					    console.log(this.checkCount);
-					}
+				if (previous == max_degree - 1) {
+					this.checkCount++;
+					console.log(this.checkCount);
+				}
 			}
 		}
 	
 	},
 	moveRight: function(max_degree, duration){
+		var MAX_DEGREES = 60;
 		var that = this;
 		var number_segments = that.imageSegments.length - 1;
-		max_degree = (max_degree > 60) ? 60 : max_degree;
+		max_degree = (max_degree > MAX_DEGREES) ? MAX_DEGREES : max_degree;
 		var degrees = Math.floor(max_degree / number_segments );
 		
 		var previous = degrees;
@@ -224,24 +211,24 @@ HCSegment.prototype = {
 				previous += degrees;
 				center_x += 1;
 				center_y += 15;
-				$("div#divsegment_"+ i + " img")
+				$("#segment_"+ i + " img")
 					.rotate({
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
 						animateTo: previous,
-						easing: $.easing.easeInOutCubic 
+						easing: $.easing.easeInOutCubic
+				});
+				$("#segment_"+ i + " .ornament img")
+					.rotate({
+						duration: duration,
+						center: [center_x+'%', center_y+'%'],
+						animateTo: previous,
+						easing: $.easing.easeInOutCubic
 				});
 				if (previous == max_degree - 1) {
-				    this.checkCount--;
-				    console.log(this.checkCount);
+					this.checkCount--;
+					console.log(this.checkCount);
 				}
-				// $("div#divsegment_"+ i + " ornament")
-				// 	.rotate({
-				// 		duration: duration,
-				// 		center: [center_x+'%', center_y+'%'],
-				// 		animateTo: 0,
-				// 		easing: $.easing.easeInOutCubic 
-				// });
 			}
 		}
 
