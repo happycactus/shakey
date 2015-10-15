@@ -29,17 +29,21 @@ HCSegment.prototype = {
 		var images = [];
 		var randomid = 0;
 		var aVariants = [];
+		var number_of_segments = parseInt(segment_settings.number_of_segments,10);
+		var totalDecorations = ((number_of_segments - 1) * (number_of_segments)) / 2;
 		
+
 		//Create segments
-		for (var i = 1; i <= segment_settings.number_of_segments; i++) {
+		for (var i = 1; i <= number_of_segments; i++) {
 			images.push({"imageType" : "segment", "id" : i, "height":segment_settings.height, "width": segment_settings.width, "alt" : segment_settings.alternative_text, "src" : imagePath + segment_settings.filepath + segment_settings.prename + i + segment_settings.filetype});
 		}
 
 		//Create ornaments
-		for (var j= 1; j <= deco_settings.number_of_variants; j++) {
+		for (var j= 1; j <= parseInt(deco_settings.number_of_variants,10); j++) {
 			aVariants.push(j);
 		}
-		for (var x = 1; x <= parseInt(deco_settings.number_of_variants, 10) * 3; x++) {
+		
+		for (var x = 1; x <= totalDecorations; x++) {
 			randomid = aVariants[Math.floor(Math.random() * aVariants.length)];
 			images.push({"imageType" : "decoration", "id" : x, "height" : deco_settings.height, "width" : deco_settings.width, "alt": deco_settings.alternative_text, "src" : imagePath + deco_settings.filepath + deco_settings.prename + randomid + deco_settings.filetype});
 		}
@@ -110,17 +114,19 @@ HCSegment.prototype = {
 		//Add Items to DOM
 		var newmargin = 0;
 		var currentHeight = 0;
-		var tempIndex = this.imageSegments.length + 1;
+		var numberElements = this.imageSegments.length;
+		var tempIndex = numberElements + 1;
 		var margin_overlap = 0.75;
+		var ornamentCount = 0;
 		
-		for (var i = 0; i < this.imageSegments.length; i++) {
+		for (var i = 0; i < numberElements; i++) {
 			currentHeight = this.imageSegments[i].height;
 			newmargin = (i === 0) ? 0 : (currentHeight * margin_overlap).toFixed(2);
 			tempIndex--;
 			
 			mynewDiv = $("<div />")
-				.attr('id', "divsegment_" + i)
-				//.addClass('')
+				.attr('id', "segment_" + i)
+				.addClass('segment')
 				.css({
 					'position' : 'relative',
 					'left' : 0,
@@ -128,48 +134,49 @@ HCSegment.prototype = {
 					'z-index'	: tempIndex
 				});
 			
-			//if (i > 1){
-				myornamentDiv = $("<div />")
-					.attr('id', 'ornament_'+i)
-					.addClass('gravity_pull')
-					.css({
-						'position' : 'absolute',
-						'left'	: '10%',
-						'bottom' : '1%'
-					});
-				//.append(mynewDiv);
-			//}
-			//Only add to certain elements
-
-
+			//Append image segment
 			mynewDiv.append(this.imageSegments[i]);
+			
+			//Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
+			for (var inner = i; inner < (i+i); inner++) {
+				mynewDiv.append( this.createOrnament(ornamentCount) );
+				ornamentCount++;
+			}
+
 			//mynewDiv.append(myornamentDiv);
 			$("#tree").append(mynewDiv);
 		}
+
 		//console.log(this.imageDecorations);
 		//this.createDecorations(this.segment.number_of_segments);
 		var max_degree = 60;
 		var duration = 300;
 		//this.shakeDirection("left", max_degree, duration);
 	},
-	createDecorations: function(number_segments){
-		for (var i = 0; i < number_segments; i++) {
-			var ornament = this.createOrnament(i);
-
-		}
-	},
-	createOrnament: function(i){
-		var currentImg = $('<img />');
-		currentImg.load(function(data){ })
-			.attr({
-				'id' : 'segment_'+i,
-				'src': 'http://192.168.16.78/games/shakey/images/decorations/orn_1.png',
-				'alt' : 'Ornament',
-				'title': 'Ornament',
-				'height' : 190,
-				'width'  : 455
-			});
-		return currentImg;
+	
+	createOrnament: function(inner){
+		//Only add to certain elements
+		var myornamentDiv = $("<div />")
+			//.attr('id', 'ornament_'+i)
+			.addClass('ornament')
+			.css({
+				'position' : 'absolute',
+				'left'	: '10%',
+				'bottom' : '1%'
+			})
+			.append(this.imageDecorations[inner]);
+		return myornamentDiv;
+		// var currentImg = $('<img />');
+		// currentImg.load(function(data){ })
+		// 	.attr({
+		// 		'id' : 'segment_'+i,
+		// 		'src': 'http://192.168.16.78/games/shakey/images/decorations/orn_1.png',
+		// 		'alt' : 'Ornament',
+		// 		'title': 'Ornament',
+		// 		'height' : 190,
+		// 		'width'  : 455
+		// 	});
+		// return currentImg;
 	},
 	moveLeft: function(max_degree, duration){
 		var that = this;
@@ -224,10 +231,10 @@ HCSegment.prototype = {
 						animateTo: previous,
 						easing: $.easing.easeInOutCubic 
 				});
-					        if (previous == max_degree - 1) {
-					    this.checkCount--;
-					    console.log(this.checkCount);
-					}
+				if (previous == max_degree - 1) {
+				    this.checkCount--;
+				    console.log(this.checkCount);
+				}
 				// $("div#divsegment_"+ i + " ornament")
 				// 	.rotate({
 				// 		duration: duration,
