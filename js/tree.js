@@ -229,6 +229,7 @@ HCSegment.prototype = {
 		}
 	
 	},
+
 	dropGift: function (degree){
 		var MAX_DEGREE = 60;
 		var allowDrop = false;

@@ -2,7 +2,7 @@
     //GLOBAL VARIABLES
     var game = new HCSegment('#segment');
     var orientation = '';
-    var moveAllowed = false;
+
     game.preloadSettings();
 
 
@@ -49,14 +49,14 @@
                         //move left
                         game.moveLeft(-tiltLR, 2);
                         game.dropGift(-tiltLR)
-                    }  else {
+                    } else {
                         game.moveRight(tiltLR, 2);
                         game.dropGift(tiltLR)
                     }   
                 }
                 
                 
-                $("#answer").text(tiltFB + " : " + tiltLR + ': ' + orientation+' - '+moveAllowed); // + " : " + tiltFB + " : " + dir);
+                $("#answer").text(tiltFB + " : " + tiltLR + ': ' + orientation); // + " : " + tiltFB + " : " + dir);
 
             }, false);
         } else {
