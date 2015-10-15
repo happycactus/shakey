@@ -417,7 +417,6 @@ a.button:hover {
     height: 100%;
     min-height: 100%;
     text-align: center;
-
     background-size: cover;
     overflow-x: hidden;
 }
@@ -461,13 +460,11 @@ a.button:hover {
         position: absolute;
     }
     #tree {
-        overflow: hidden;
         width: auto;
         transition: .35s;
         max-width: 100%;
         position: absolute;
         bottom: 0;
-
     }
     #tree div,
     #tree div img {
@@ -483,14 +480,10 @@ a.button:hover {
 
 @media only screen and (min-width: 480px) {
     #tree {
-        overflow: hidden;
         margin: 0 auto;
         width: auto;
         max-width: 960px;
         transition: .35s;
-    left: 25%;
-    bottom:5%;
-
     }
     #tree div,
     #tree div img {
