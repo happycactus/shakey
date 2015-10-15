@@ -23,9 +23,7 @@ HCSegment.prototype = {
 				
 				
 				that.segment = data['settings'][0].segment;
-				that.decoration = data['settings'][0].decoration;
-				that.preloadImages(that.settings[0].imagePath, that.segment, that.decoration);
-				//that.preloadDecorationImages(that.settings[0].imagePath, that.decoration);
+				that.preloadImages(that.settings[0].imagePath, data['settings'][0].segment, data['settings'][0].decoration);
 			}
 		});
 	},
@@ -49,38 +47,12 @@ HCSegment.prototype = {
 			images.push({"imageType" : "decoration", "id" : x, "height" : deco_settings.height, "width" : deco_settings.width, "alt": deco_settings.alternative_text, "src" : imagePath + deco_settings.filepath + deco_settings.prename + randomid + deco_settings.filetype});
 		}
 		
-		console.log(images);
-		//that.loadImages(segment_settings.height, segment_settings.width, segment_settings.alternative_text, image_srcs, imagesLoaded);
 		that.loadImages(images, imagesLoaded);
 		
 		//Callback function after images have loaded
 		function imagesLoaded( data ){
 			that.initDOM();
 		}
-
-	},
-	preloadDecorationImages: function(imagePath, deco_settings){
-		var that = this;
-		var randomid = 0;
-		var image_srcs = [];
-		var aVariants = [];
-		
-		for (var i = 1; i <= deco_settings.number_of_variants; i++) {
-			aVariants.push(i);
-		}
-		for (var x = 1; x <= parseInt(deco_settings.number_of_variants, 10) * 3; x++) {
-			randomid = aVariants[Math.floor(Math.random() * aVariants.length)];
-			image_srcs.push(imagePath + deco_settings.filepath + deco_settings.prename + randomid + deco_settings.filetype);
-		}
-		
-		//that.loadImages(deco_settings.height, deco_settings.width, deco_settings.alternative_text, image_srcs, imageDecorsLoaded);
-		
-		//Callback function after images have loaded
-		function imageDecorsLoaded( data ){
-			that.imageDecorations = data;
-			that.initDOM();
-		}
-
 	},
 	loadImages: function(image_sources, callback){
 		var that = this;
@@ -99,11 +71,10 @@ HCSegment.prototype = {
 				loadCounter++;
 				if (loadCounter == image_sources.length){
 					if ( String(typeof(callback)).toUpperCase() == 'FUNCTION' ){
-						aImages.sort(function sortArrayBySource(a, b){
-							var a_src = $(a).attr('src').toUpperCase();
-							var b_src = $(b).attr('src').toUpperCase();
-							return (a_src < b_src) ? -1 : (a_src > b_src) ? 1 : 0;
-							});
+						//SORT ALL ARRAYS into ID order
+						that.sortArray(that.imageSegments);
+						that.sortArray(that.imageDecorations);
+						that.sortArray(aImages);
 						callback(aImages);
 					}
 				}
@@ -116,6 +87,17 @@ HCSegment.prototype = {
 				'height' : image.height,
 				'width'  : image.width
 			});
+		});
+	},
+	/* 
+	* Sorts an array into the order of the ID 
+	* Requires an array with an ID property
+	*/
+	sortArray: function(current_array){
+		current_array.sort(function sortArrayBySource(a, b){
+			var a_src = $(a).attr('id').toUpperCase();
+			var b_src = $(b).attr('id').toUpperCase();
+			return (a_src < b_src) ? -1 : (a_src > b_src) ? 1 : 0;
 		});
 	},
 	//Initialise fields in DOM
