@@ -159,7 +159,7 @@ HCSegment.prototype = {
 		}
 
 		//this.createDecorations(this.segment.number_of_segments);
-		var max_degree = 60;
+		var max_degree = 45;
 		var duration = 300;
 		//this.shakeDirection("left", max_degree, duration);
 	},
@@ -169,7 +169,7 @@ HCSegment.prototype = {
 		return this.imageDecorations[inner];
 	},
 	moveLeft: function(max_degree, duration){
-		var MAX_DEGREES = 60;
+		var MAX_DEGREES = 45;
 		var that = this;
 		var number_segments = that.imageSegments.length - 1;
 		max_degree = (max_degree > MAX_DEGREES) ? MAX_DEGREES : max_degree;
@@ -196,7 +196,7 @@ HCSegment.prototype = {
 					.rotate({
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
-						animateTo: previous,
+						animateTo: previous*2,
 						easing: $.easing.easeInOutCubic
 				});
 				// if (previous == max_degree - 1) {
@@ -208,7 +208,7 @@ HCSegment.prototype = {
 	
 	},
 	moveRight: function(max_degree, duration){
-		var MAX_DEGREES = 60;
+		var MAX_DEGREES = 45;
 		var that = this;
 		var number_segments = that.imageSegments.length - 1;
 		max_degree = (max_degree > MAX_DEGREES) ? MAX_DEGREES : max_degree;
@@ -234,7 +234,7 @@ HCSegment.prototype = {
 					.rotate({
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
-						animateTo: -previous,
+						animateTo: -previous*2,
 						easing: $.easing.easeInOutCubic
 				});
 				// if (previous == max_degree - 1) {
@@ -246,7 +246,7 @@ HCSegment.prototype = {
 
 	},
 	shakeDirection: function(direction, max_degree, duration){
-		var MAX_DEGREES = 60;
+		var MAX_DEGREES = 45;
 		var that = this;
 		
 		if ( max_degree > 1 && max_degree <= MAX_DEGREES){
