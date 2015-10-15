@@ -48,8 +48,10 @@
                     if (tiltLR < 0) {
                         //move left
                         game.moveLeft(-tiltLR, 2);
+                        game.dropGift(-tiltLR)
                     }  else {
                         game.moveRight(tiltLR, 2);
+                        game.dropGift(tiltLR)
                     }   
                 }
                 

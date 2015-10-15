@@ -234,6 +234,16 @@ HCSegment.prototype = {
 		}
 	
 	},
+
+	dropGift: function (degree){
+		var allowDrop = false;
+		if (degree == max_degree){
+			var dropit = 'dropped';
+			return dropit
+		}
+
+	},
+
 	// shakeRight: function(max_degree, duration){
 	// 	var t= this;
 	// 	var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
