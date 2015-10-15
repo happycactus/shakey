@@ -460,15 +460,18 @@ a.button:hover {
         position: absolute;
     }
     #tree {
-        width: auto;
+        width: 100%;
         transition: .35s;
-        max-width: 100%;
+        max-width: auto;
         position: absolute;
         bottom: 0;
     }
     #tree .segment > img {
         width: 100%;
         height: 190px;
+    }
+    #tree .ornament > img {
+margin: 0 15px;
     }
 }
 

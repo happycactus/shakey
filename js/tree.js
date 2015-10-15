@@ -136,12 +136,24 @@ HCSegment.prototype = {
 			
 			//Append image segment
 			mynewDiv.append(this.imageSegments[i]);
-			
+			var myornamentDiv = $("<div />")
+				//.attr('id', 'ornament_'+i)
+				.addClass('ornament')
+				.css({
+					'position' : 'absolute',
+					'width' : '100%',
+					'text-align' : 'center',
+					'bottom' : '2%'
+				});
 			//Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
 			for (var inner = i; inner < (i+i); inner++) {
-				mynewDiv.append( this.createOrnament(ornamentCount) );
+		
+
+				myornamentDiv.append( this.createOrnament(ornamentCount) );
 				ornamentCount++;
+	
 			}
+			mynewDiv.append(myornamentDiv);
 
 			$("#tree").append(mynewDiv);
 		}
@@ -153,16 +165,8 @@ HCSegment.prototype = {
 	},
 	createOrnament: function(inner){
 		
-		var myornamentDiv = $("<div />")
-			//.attr('id', 'ornament_'+i)
-			.addClass('ornament')
-			.css({
-				'position' : 'absolute',
-				'left'	: '49%',
-				'bottom' : '2%'
-			})
-			.append(this.imageDecorations[inner]);
-		return myornamentDiv;
+
+		return this.imageDecorations[inner];
 	},
 	moveLeft: function(max_degree, duration){
 		var MAX_DEGREES = 60;
