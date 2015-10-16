@@ -410,7 +410,7 @@ a.button:hover {
     color: black;
 }
 
-.container { 
+.container {
     position: relative;
     width: 100%;
     margin: 0 auto;
@@ -429,7 +429,7 @@ a.button:hover {
 :-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
     color: white;
-    opacity: 1; 
+    opacity: 1;
 }
 
 ::-moz-placeholder {
@@ -453,27 +453,13 @@ a.button:hover {
         height: 100%;
         max-width: 960px;
     }
-    .header img {
+     #tree .segment > img {
         width: 100%;
-    }
-    .header {
-        position: absolute;
-    }
-    #tree {
-
-        width: 100%;
-        transition: .35s;
-        max-width: auto;
-
-        position: absolute;
-        bottom: 0;
-    }
-    #tree .segment > img {
-        width: 100%;
+        min-height:180px;
         height: auto;
     }
     #tree .ornament > img {
-margin: 0 25px;
+        margin: 0 15px;
     }
 }
 
@@ -481,14 +467,14 @@ margin: 0 25px;
 /* Extra Small Devices, Phones */
 
 @media only screen and (min-width: 480px) {
-    #tree {
-        margin: 0 auto;
-        width: auto;
+   #tree {
         max-width: 960px;
-        transition: .35s;
     }
     #tree .segment > img {
         width: auto;
+    }
+     #tree .ornament > img {
+        margin: 0 25px;
     }
 }
 
@@ -496,15 +482,8 @@ margin: 0 25px;
 /* Small Devices, Tablets */
 
 @media only screen and (min-width: 768px) {
-    .header img {
-        width: 100%;
-        max-width: 960px;
-    }
     #tree {
         width: 100%;
-    }
-    #tree .segment > img {
-        width: auto;
     }
 }
 

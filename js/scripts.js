@@ -5,6 +5,16 @@
 
     game.preloadSettings();
 
+     $('#tree').click(function(event){
+        //var timer = 0;
+        //var direction = "left";
+        //for (var i = 0; i < 10; i++) {
+                game.shakeDirection("left", 45, 2);
+                //movementDelay(direction, timer);
+                //direction = (direction == "left") ? "right" : "left";
+                //timer = timer + 500;
+         //}
+    });
 
     $(document).ready(function() {
         //DETECT orientation and create action
@@ -56,7 +66,7 @@
                 }
                 
                 
-                $("#answer").text(tiltFB + ' sf-> ' + game.checkCount) // + " : " + tiltFB + " : " + dir);
+                //$("#answer").text(tiltFB + ' sf-> ' + game.checkCount) // + " : " + tiltFB + " : " + dir);
 
             }, false);
         } else {
@@ -90,6 +100,18 @@
         //WINDOW RESIZE
         $(window).resize(function() {});
 
+
+
+        // function movementDelay( direction, secondsdelay ){
+        //     setTimeout(function(){
+        //         console.log(direction);
+        //         if (direction == "left"){
+        //             game.moveLeft(45, 1);
+        //         } else {
+        //              game.moveRight(45, 1);
+        //         }
+        //     }, secondsdelay);
+        // }
     });
 
     // $('a#knop').click(function(event){
