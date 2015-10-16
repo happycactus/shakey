@@ -56,7 +56,7 @@
                 }
                 
                 
-                $("#answer").text(tiltFB + ' -> ' + game.checkCount) // + " : " + tiltFB + " : " + dir);
+                $("#answer").text(tiltFB + ' sf-> ' + game.checkCount) // + " : " + tiltFB + " : " + dir);
 
             }, false);
         } else {

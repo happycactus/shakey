@@ -115,7 +115,7 @@ HCSegment.prototype = {
             return (a_src < b_src) ? -1 : (a_src > b_src) ? 1 : 0;
         });
     },
-    //Initialise fields in DOM
+    //Initialise fields in DOMd
     initDOM: function() {
         this.checkCount = 0;
 
