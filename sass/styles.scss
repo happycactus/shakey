@@ -455,6 +455,8 @@ a.button:hover {
     }
      #tree .segment > img {
         width: 100%;
+        max-width: auto;
+        padding:0 5%;
         min-height:180px;
         height: auto;
     }
@@ -474,7 +476,7 @@ a.button:hover {
         width: auto;
     }
      #tree .ornament > img {
-        margin: 0 25px;
+        margin: 0 15px;
     }
 }
 

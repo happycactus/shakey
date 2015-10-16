@@ -195,12 +195,12 @@ HCSegment.prototype = {
 
         var previous = degrees;
         var center_y = 100;
-        var center_x = 38;
+        var center_x = 50;
 
         if (max_degree > 1) {
             for (var i = number_segments - 1; i >= 0; i--) {
                 previous += degrees;
-                center_x += 1;
+                center_x -= 1;
                 center_y += 15;
                 //duration += 10;
                 $("#segment_" + i)
@@ -234,7 +234,7 @@ HCSegment.prototype = {
 
         var previous = degrees;
         var center_y = 100;
-        var center_x = 38;
+        var center_x = 50;
         var ball_center_x = center_x;
 
         if (max_degree > 1) {
