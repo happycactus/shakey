@@ -57,10 +57,10 @@
                 if (tiltFB < 90){ //tilted forward - no nothing
                     if (tiltLR < 0) {
                         //move left
-                        game.moveLeft(-tiltLR, 2);
+                        game.moveLeft(-tiltLR, 20);
                    
                     } else {
-                        game.moveRight(tiltLR, 2);
+                        game.moveRight(tiltLR, 20);
   
                     }   
                 }
