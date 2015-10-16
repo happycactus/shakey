@@ -1,11 +1,10 @@
-HCSegment = function (element) { //renamed arg for readability
+HCSegment = function(element) { //renamed arg for readability
     this.element = (element instanceof $) ? element : $(element);
 };
 
 HCSegment.prototype = {
 
-	preloadSettings: function(){
-
+  	preloadSettings: function(){
 		var that = this;
 		that.imageSegments = [];
 		that.imageDecorations = [];
@@ -145,8 +144,7 @@ HCSegment.prototype = {
 					'position' : 'absolute',
 					'width' : '100%',
 					'text-align' : 'center',
-					'bottom' : '5%'
-
+					'bottom' : '2%'
 				});
 			//Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
 			for (var inner = i; inner < (i+i); inner++) {
@@ -162,8 +160,7 @@ HCSegment.prototype = {
 		}
 
 		//this.createDecorations(this.segment.number_of_segments);
-		var max_degree = 45;
-
+		var max_degree = 60;
 		var duration = 300;
 		//this.shakeDirection("left", max_degree, duration);
 	},
@@ -173,9 +170,7 @@ HCSegment.prototype = {
 		return this.imageDecorations[inner];
 	},
 	moveLeft: function(max_degree, duration){
-
-		var MAX_DEGREES = 45;
-
+		var MAX_DEGREES = 60;
 		var that = this;
 		var number_segments = that.imageSegments.length - 1;
 		max_degree = (max_degree > MAX_DEGREES) ? MAX_DEGREES : max_degree;
@@ -202,9 +197,7 @@ HCSegment.prototype = {
 					.rotate({
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
-
-						animateTo: previous*2,
-
+						animateTo: previous,
 						easing: $.easing.easeInOutCubic
 				});
 				// if (previous == max_degree - 1) {
@@ -216,8 +209,7 @@ HCSegment.prototype = {
 	
 	},
 	moveRight: function(max_degree, duration){
-
-		var MAX_DEGREES = 45;
+		var MAX_DEGREES = 60;
 		var that = this;
 		var number_segments = that.imageSegments.length - 1;
 		max_degree = (max_degree > MAX_DEGREES) ? MAX_DEGREES : max_degree;
@@ -243,8 +235,7 @@ HCSegment.prototype = {
 					.rotate({
 						duration: duration,
 						center: [center_x+'%', center_y+'%'],
-						animateTo: -previous*2,
-
+						animateTo: -previous,
 						easing: $.easing.easeInOutCubic
 				});
 				// if (previous == max_degree - 1) {
@@ -256,9 +247,7 @@ HCSegment.prototype = {
 
 	},
 	shakeDirection: function(direction, max_degree, duration){
-
-		var MAX_DEGREES = 45;
-
+		var MAX_DEGREES = 60;
 		var that = this;
 		
 		if ( max_degree > 1 && max_degree <= MAX_DEGREES){
