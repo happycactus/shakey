@@ -157,7 +157,7 @@ HCSegment.prototype = {
                     'position': 'absolute',
                     'width': '100%',
                     'text-align': 'center',
-                    'bottom': '5%'
+                    'bottom': '10%'
                 });
             
             //Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
@@ -211,7 +211,7 @@ HCSegment.prototype = {
                         animateTo: -previous,
                         easing: $.easing.easeInOutCubic
                     });
-                $("#segment_" + i + " .ornament img")
+                $("#segment_" + i + " .ornament")
                     .rotate({
                         duration: duration,
                         center: [center_x + '%', center_y + '%'],
