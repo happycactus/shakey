@@ -410,7 +410,7 @@ a.button:hover {
     color: black;
 }
 
-.container {
+.container { 
     position: relative;
     width: 100%;
     margin: 0 auto;
@@ -429,7 +429,7 @@ a.button:hover {
 :-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
     color: white;
-    opacity: 1;
+    opacity: 1; 
 }
 
 ::-moz-placeholder {
@@ -461,9 +461,10 @@ a.button:hover {
     }
     #tree {
 
-        width: auto;
+        width: 100%;
         transition: .35s;
-        max-width: 100%;
+        max-width: auto;
+
         position: absolute;
         bottom: 0;
     }
@@ -482,7 +483,7 @@ margin: 0 25px;
 @media only screen and (min-width: 480px) {
     #tree {
         margin: 0 auto;
-
+        width: auto;
         max-width: 960px;
         transition: .35s;
     }
