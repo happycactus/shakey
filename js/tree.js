@@ -61,7 +61,6 @@ HCSegment.prototype = {
                 "src": imagePath + deco_settings.filepath + deco_settings.prename + randomid + deco_settings.filetype
             });
         }
-
         that.loadImages(images, imagesLoaded);
 
         //Callback function after images have loaded
@@ -157,7 +156,7 @@ HCSegment.prototype = {
                     'position': 'absolute',
                     'width': '100%',
                     'text-align': 'center',
-                    'bottom': '5%'
+                    'bottom': '11%'
                 });
             
             //Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
@@ -214,8 +213,8 @@ HCSegment.prototype = {
                 $("#segment_" + i + " .ornament img")
                     .rotate({
                         duration: duration,
-                        center: [center_x + '%', center_y + '%'],
-                        animateTo: previous * 2,
+                        //center: [center_x + '%', center_y + '%'],
+                        animateTo: max_degree,
                         easing: $.easing.easeInOutCubic
                     });
                 // if (previous == max_degree - 1) {
@@ -236,6 +235,7 @@ HCSegment.prototype = {
         var previous = degrees;
         var center_y = 100;
         var center_x = 38;
+        var ball_center_x = center_x;
 
         if (max_degree > 1) {
             for (var i = number_segments - 1; i >= 0; i--) {
@@ -249,13 +249,16 @@ HCSegment.prototype = {
                         animateTo: previous,
                         easing: $.easing.easeInOutCubic
                     });
+                //ball_center_x = center_x - 60;
+                //ball
                 $("#segment_" + i + " .ornament img")
                     .rotate({
                         duration: duration,
-                        center: [center_x + '%', center_y + '%'],
-                        animateTo: -previous * 2,
+                        //center: [ball_center_x + '%', center_y + '%'],
+                        animateTo: -max_degree,
                         easing: $.easing.easeInOutCubic
                     });
+
                 // if (previous == max_degree - 1) {
                 // 	this.checkCount--;
                 // 	console.log(this.checkCount);
@@ -267,6 +270,7 @@ HCSegment.prototype = {
     shakeDirection: function(direction, max_degree, duration) {
         var MAX_DEGREES = 45;
         var that = this;
+        var animation;
 
         if (max_degree > 1 && max_degree <= MAX_DEGREES) {
 
@@ -282,17 +286,17 @@ HCSegment.prototype = {
                 center_x += 1;
                 center_y += 15;
                 duration += 10;
-
-                $("div#divsegment_" + i + " img")
+                animation = (direction == 'left') ? -previous : previous;
+                $("#segment_" + i)
                     .rotate({
                         duration: duration,
                         center: [center_x + '%', center_y + '%'],
-                        animateTo: (direction == 'left') ? -previous : previous,
-                        easing: $.easing.easeInOutCubic //,
-                            // callback: function(){
-                            // 	direction = (direction == 'left') ? 'right' : 'left';
-                            // 	that.shakeDirection(direction, max_degree/2, duration);
-                            // }
+                        animateTo: animation,
+                        easing: $.easing.easeInOutCubic,
+                        callback: function(){
+                            direction = (direction == 'left') ? 'right' : 'left';
+                            that.shakeDirection(direction, max_degree/2, duration);
+                        }
                     });
             }
         }
