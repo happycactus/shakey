@@ -6,14 +6,16 @@
     game.preloadSettings();
 
      $('#tree').click(function(event){
-        //var timer = 0;
-        //var direction = "left";
-        //for (var i = 0; i < 10; i++) {
-                game.shakeDirection("left", 45, 2);
-                //movementDelay(direction, timer);
-                //direction = (direction == "left") ? "right" : "left";
-                //timer = timer + 500;
-         //}
+        game.shake("left", 50, 360, 150);
+        // setTimeout(function(){
+        //     game.shake("left", 1, 360, 150);
+        // },360);
+        setTimeout(function(){
+            game.shake("right", 50, 360, 150);
+        },400);
+        // setTimeout(function(){
+        //        game.shake("right", 1, 360, 150);
+        // },1080);
     });
 
     $(document).ready(function() {
@@ -32,36 +34,13 @@
                 // alpha is the compass direction the device is facing in degrees
                 var dir = Math.round(eventData.alpha);
 
-
-
-                // if (tiltLR === 0) {
-                //    // orientation = 'center';
-                //     moveAllowed = true;
-                // }
-
-                // if (tiltLR < 0) {
-                // 	//orientation = 'left';
-
-                //     game.moveLeft(-tiltLR, 2);
-
-                // } else if (tiltLR > 0) {
-                // 	//orientation = 'right';
-                //     game.moveRight(tiltLR, 2);
-
-
-                // }
-                
-
-
                 //Check forward tilt
                 if (tiltFB < 90){ //tilted forward - no nothing
                     if (tiltLR < 0) {
                         //move left
-                        game.moveLeft(-tiltLR, 20);
-                   
+                        game.shake("left", -tiltLR, 2);
                     } else {
-                        game.moveRight(tiltLR, 20);
-  
+                        game.shake("right", tiltLR, 2);
                     }   
                 }
                 

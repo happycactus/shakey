@@ -19,7 +19,7 @@ HCSegment.prototype = {
                     "rules_header": data['settings'][0].rules_header,
                     "shake_text": data['settings'][0].shake_text,
                 });
-
+                that.inaction = false;
                 that.preloadImages(that.settings[0].imagePath, data['settings'][0].segment, data['settings'][0].decoration);
             }
         });
@@ -182,125 +182,94 @@ HCSegment.prototype = {
         //this.shakeDirection("left", max_degree, duration);
     },
     createOrnament: function(inner) {
-
-
         return this.imageDecorations[inner];
     },
-    moveLeft: function(max_degree, duration) {
-        var MAX_DEGREES = 45;
+    shake:function(direction, current_degree, duration, max_degree){
         var that = this;
-        var number_segments = that.imageSegments.length - 1;
-        max_degree = (max_degree > MAX_DEGREES) ? MAX_DEGREES : max_degree;
-        var degrees = Math.floor(max_degree / number_segments);
+        var MAX_DEGREES = (max_degree === "undefined" || max_degree === null) ? max_degree : 50;
 
-        var previous = degrees;
+        var number_segments = that.imageSegments.length -1;
+        
+        //Only create animation to the maximum degrees
+        current_degree = (current_degree > MAX_DEGREES) ? MAX_DEGREES : current_degree;
+        var degrees = Math.floor(current_degree / number_segments);
+
+        //Rotate from the bottom center point
         var center_y = 100;
         var center_x = 50;
 
-        if (max_degree > 1) {
-            for (var i = number_segments - 1; i >= 0; i--) {
-                previous += degrees;
-                center_x -= 1;
-                center_y += 15;
-                //duration += 10;
-                $("#segment_" + i)
-                    .rotate({
-                        duration: duration,
-                        center: [center_x + '%', center_y + '%'],
-                        animateTo: -previous,
-                        easing: $.easing.easeInOutCubic
-                    });
-                $("#segment_" + i + " .ornament img")
-                    .rotate({
-                        duration: duration,
-                        //center: [center_x + '%', center_y + '%'],
-                        animateTo: max_degree,
-                        easing: $.easing.easeInOutCubic
-                    });
-                // if (previous == max_degree - 1) {
-                // 	this.checkCount++;
-                // 	console.log(this.checkCount);
-                // }
-            }
-        }
-
-    },
-    moveRight: function(max_degree, duration) {
-        var MAX_DEGREES = 45;
-        var that = this;
-        var number_segments = that.imageSegments.length - 1;
-        max_degree = (max_degree > MAX_DEGREES) ? MAX_DEGREES : max_degree;
-        var degrees = Math.floor(max_degree / number_segments);
-
         var previous = degrees;
-        var center_y = 100;
-        var center_x = 50;
-        var ball_center_x = center_x;
-
-        if (max_degree > 1) {
+        
+        //Only rotate if degree is more than zero
+        if (current_degree >= 1 && current_degree <= MAX_DEGREES) {
+            //Repeat rotation for each segment moving slightly higher/lower and left/right
             for (var i = number_segments - 1; i >= 0; i--) {
                 previous += degrees;
-                center_x += 1;
-                center_y += 15;
-                $("#segment_" + i)
-                    .rotate({
-                        duration: duration,
-                        center: [center_x + '%', center_y + '%'],
-                        animateTo: previous,
-                        easing: $.easing.easeInOutCubic
-                    });
-                //ball_center_x = center_x - 60;
-                //ball
-                $("#segment_" + i + " .ornament img")
-                    .rotate({
-                        duration: duration,
-                        //center: [ball_center_x + '%', center_y + '%'],
-                        animateTo: -max_degree,
-                        easing: $.easing.easeInOutCubic
-                    });
-
-                // if (previous == max_degree - 1) {
-                // 	this.checkCount--;
-                // 	console.log(this.checkCount);
-                // }
+                center_y += 10;
+                //center_x += 0;
+                if (direction == 'left'){
+                    //center_x -= 0;
+                    that.segmentRotate( "#segment_" + i, duration, center_x, center_y, -previous);
+                    that.decorationRotate("#segment_" + i + " .ornament img", duration, current_degree);
+                } else {
+                    //center_x += 0;
+                    that.segmentRotate( "#segment_" + i, duration, center_x, center_y, previous);
+                    that.decorationRotate("#segment_" + i + " .ornament img", duration, -current_degree);
+                }
             }
         }
-
     },
-    shakeDirection: function(direction, max_degree, duration) {
-        var MAX_DEGREES = 45;
-        var that = this;
-        var animation;
+    //Rotates the segment from the xy axis X degrees for X duration
+    segmentRotate: function( segmentId, duration, center_x, center_y, animateDegree){
+        $(segmentId).rotate({
+            duration: duration,
+            center: [center_x + '%', center_y + '%'],
+            animateTo: animateDegree,
+            easing: $.easing.easeInOutCubic
+        });
+    },
+    //Rotates the decoration X degrees for X duration
+    decorationRotate: function(imageId, duration, animateDegree){
+        $(imageId).rotate({
+            duration: duration,
+            animateTo: animateDegree,
+            easing: $.easing.easeInOutCubic
+        });
+    }//,
+    // shakeDirection: function(direction, max_degree, duration) {
+    //     var MAX_DEGREES = 50;
+    //     var that = this;
+    //     var animation;
 
-        if (max_degree > 1 && max_degree <= MAX_DEGREES) {
+    //     if (max_degree >= 1 && max_degree <= MAX_DEGREES) {
 
-            var number_segments = that.imageSegments.length - 1;
-            var degrees = Math.floor(max_degree / number_segments);
+    //         var number_segments = that.imageSegments.length - 1;
+    //         var degrees = Math.floor(max_degree / number_segments);
 
-            var previous = degrees;
-            var center_y = 100;
-            var center_x = 38;
+    //         var previous = degrees;
+    //         var center_y = 100;
+    //         var center_x = 50;
 
-            for (var i = number_segments - 1; i >= 0; i--) {
-                previous += degrees;
-                center_x += 1;
-                center_y += 15;
-                duration += 10;
-                animation = (direction == 'left') ? -previous : previous;
-                $("#segment_" + i)
-                    .rotate({
-                        duration: duration,
-                        center: [center_x + '%', center_y + '%'],
-                        animateTo: animation,
-                        easing: $.easing.easeInOutCubic,
-                        callback: function(){
-                            direction = (direction == 'left') ? 'right' : 'left';
-                            that.shakeDirection(direction, max_degree/2, duration);
-                        }
-                    });
-            }
-        }
-    }
+    //         for (var i = number_segments - 1; i >= 0; i--) {
+    //             previous += degrees;
+    //             center_x += 1;
+    //             center_y += 10;
+    //             //duration += 10;
+    //             animation = (direction == 'left') ? -previous : previous;
+    //             $("#segment_" + i)
+    //                 .rotate({
+    //                     duration: duration,
+    //                     center: [center_x + '%', center_y + '%'],
+    //                     animateTo: animation,
+    //                     easing: $.easing.easeInOutCubic,
+    //                     callback: function(){
+    //                         direction = (direction == 'left') ? 'right' : 'left';
+    //                         that.shakeDirection(direction, max_degree/2, duration);
+    //                     }
+    //                 });
+    //         }
+    //     }
+    // }
 
     // shakeRight: function(max_degree, duration){
     // 	var t= this;
