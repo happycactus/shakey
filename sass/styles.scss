@@ -450,12 +450,17 @@ a.button:hover {
     .container {
         width: 100%;
         overflow: hidden;
-        height: 100%;
+        height: auto;
         max-width: 960px;
     }
-     #tree .segment > img {
+    .frame{
+        position: absolute;
+        bottom: 0;
         width: 100%;
-        max-width: auto;
+    }
+     #tree .segment > img {
+width: auto;
+    max-width: 100%;
         padding:0 5%;
         min-height:180px;
         height: auto;
