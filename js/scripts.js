@@ -2,20 +2,36 @@
     //GLOBAL VARIABLES
     var game = new HCSegment('#segment');
     var orientation = '';
+    var inaction = false;
 
     game.preloadSettings();
+    
 
      $('#tree').click(function(event){
-        game.shake("left", 50, 360, 150);
-        // setTimeout(function(){
-        //     game.shake("left", 1, 360, 150);
-        // },360);
-        setTimeout(function(){
-            game.shake("right", 50, 360, 150);
-        },400);
-        // setTimeout(function(){
-        //        game.shake("right", 1, 360, 150);
-        // },1080);
+        if (!inaction){
+            var timeinterval = 360;
+            var delaytimer = 0;
+            var degrees = 50;
+            var direction = "right";
+
+            game.shake("left", 50, timeinterval, 70);
+            var shakeanimation = setInterval(function(){
+                game.shake(direction, degrees, timeinterval, 70);
+                direction = (direction == 'left') ? 'right' : 'left';
+                degrees = degrees/2;
+                inaction = true;
+                
+                if (degrees < 1) {
+                    inaction = false;
+                    clearTimeout(shakeanimation);
+                }
+                
+            }, timeinterval);
+          
+            setTimeout(function(){
+                game.releaseDecoration();
+            },100);
+        }
     });
 
     $(document).ready(function() {
@@ -38,9 +54,9 @@
                 if (tiltFB < 90){ //tilted forward - no nothing
                     if (tiltLR < 0) {
                         //move left
-                        game.shake("left", -tiltLR, 2);
+                        game.shake("left", -tiltLR, 2, null);
                     } else {
-                        game.shake("right", tiltLR, 2);
+                        game.shake("right", tiltLR, 2, null);
                     }   
                 }
                 

@@ -160,7 +160,7 @@ HCSegment.prototype = {
                 });
             
             //Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
-            if (i < numberElements-1) {
+            if (i < numberElements-1 && i > 0) {
                 for (var inner = i; inner < (i + i); inner++) {
                     
 
@@ -168,10 +168,9 @@ HCSegment.prototype = {
                     ornamentCount++;
 
                 }
-
+                mynewDiv.append(myornamentDiv);
             }
 
-            mynewDiv.append(myornamentDiv);
 
             $("#tree").append(mynewDiv);
         }
@@ -186,8 +185,7 @@ HCSegment.prototype = {
     },
     shake:function(direction, current_degree, duration, max_degree){
         var that = this;
-        var MAX_DEGREES = (max_degree === "undefined" || max_degree === null) ? max_degree : 50;
-
+        var MAX_DEGREES = (max_degree === "undefined" || max_degree === null) ?  50 : max_degree;
         var number_segments = that.imageSegments.length -1;
         
         //Only create animation to the maximum degrees
@@ -197,7 +195,7 @@ HCSegment.prototype = {
         //Rotate from the bottom center point
         var center_y = 100;
         var center_x = 50;
-
+        
         var previous = degrees;
         
         //Only rotate if degree is more than zero
@@ -235,7 +233,21 @@ HCSegment.prototype = {
             animateTo: animateDegree,
             easing: $.easing.easeInOutCubic
         });
-    }//,
+    },
+    releaseDecoration: function(){
+        var aDecoImages = $('.ornament img');
+        var randomid = aDecoImages[Math.floor(Math.random() * aDecoImages.length)];
+
+        //console.log(randomid);
+       
+        //Select a random number from 1 to number of segments
+
+
+        //Select the DOM element - if it exists, otherwise select another DOM element
+
+        //Select the parent and animate the gift to the ground
+
+    }
     // shakeDirection: function(direction, max_degree, duration) {
     //     var MAX_DEGREES = 50;
     //     var that = this;
