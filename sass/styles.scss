@@ -447,13 +447,15 @@ a.button:hover {
         bottom: 12%;
         width: 100%;
     }
-    .treeframe { width:90%; margin: 0 auto;}
+    .treeframe { width:90%; margin: 0 auto; position:relative;}
     .segment > img {
         width: auto;
         max-width: 100%;
         min-height:185px;
         height: auto;
     }
+    .treeframe img{z-index:99999;}
+
 }
 
 

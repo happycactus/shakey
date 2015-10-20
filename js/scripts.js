@@ -55,6 +55,9 @@
                     if (tiltLR < 0) {
                         //move left
                         game.shake("left", -tiltLR, 2, null);
+                        setTimeout(function(){
+                            game.releaseDecoration();
+                        },500);
                     } else {
                         game.shake("right", tiltLR, 2, null);
                     }   
