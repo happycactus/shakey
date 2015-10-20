@@ -28,11 +28,11 @@ HCSegment.prototype = {
         var that = this;
         var images = [];
         var randomid = 0;
-        var aVariants = [];
+        var aVariants = [], aPrizes = [];
         var number_of_segments = parseInt(segment_settings.number_of_segments, 10);
-        var totalDecorations = ((number_of_segments - 1) * (number_of_segments)) / 2;
-
-
+        var number_winning_prizes = parseInt(deco_settings.prizes_to_win, 10);
+        var totalDecorations = ((number_of_segments - 2) * (number_of_segments - 2 + 1)) / 2;  //Split in two - one for ornaments the other for gifts  - minus the trunk and top
+        
         //Create segments
         for (var i = 1; i <= number_of_segments; i++) {
             images.push({
@@ -45,28 +45,56 @@ HCSegment.prototype = {
             });
         }
 
-        //Create ornaments
-        for (var j = 1; j <= parseInt(deco_settings.number_of_variants, 10); j++) {
-            aVariants.push(j);
+        //Create decorations
+        for (var x = 1; x <= parseInt(deco_settings.number_of_variant_decorations, 10); x++) {
+            aVariants.push(x);
         }
-
-        for (var x = 1; x <= totalDecorations; x++) {
-            randomid = aVariants[Math.floor(Math.random() * aVariants.length)];
+        
+        //Create prize decorations
+        for (var a = 1; a <= parseInt(deco_settings.number_of_variant_prizes, 10); a++) {
+            aPrizes.push(a);
+        }
+        
+        for (var b = 1; b <= Math.floor(totalDecorations / 2); b++) {
+            randomid = aPrizes[Math.floor(Math.random() * aPrizes.length)];
             images.push({
-                "imageType": "decoration",
-                "id": x,
+                "imageType": "prize",
+                "id": b,
                 "height": deco_settings.height,
                 "width": deco_settings.width,
                 "alt": deco_settings.alternative_text,
-                "src": imagePath + deco_settings.filepath + deco_settings.prename + randomid + deco_settings.filetype
+                "src": imagePath + deco_settings.filepath + deco_settings.prize_prename + randomid + deco_settings.filetype
             });
         }
+
+        for (var y = 1; y <= Math.ceil(totalDecorations / 2); y++) {
+            randomid = aVariants[Math.floor(Math.random() * aVariants.length)];
+            images.push({
+                "imageType": "decoration",
+                "id": y,
+                "height": deco_settings.height,
+                "width": deco_settings.width,
+                "alt": deco_settings.alternative_text,
+                "src": imagePath + deco_settings.filepath + deco_settings.deco_prename + randomid + deco_settings.filetype
+            });
+        }
+
+        that.shuffleArray(images);
         that.loadImages(images, imagesLoaded);
 
         //Callback function after images have loaded
         function imagesLoaded(data) {
             that.initDOM();
         }
+    },
+    shuffleArray: function(collection){
+        for (var i = collection.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = collection[i];
+            collection[i] = collection[j];
+            collection[j] = temp;
+        }
+        return collection;
     },
     loadImages: function(image_sources, callback) {
         var that = this;
@@ -87,7 +115,6 @@ HCSegment.prototype = {
                         if (String(typeof(callback)).toUpperCase() == 'FUNCTION') {
                             //SORT ALL ARRAYS into ID order
                             that.sortArray(that.imageSegments);
-                            that.sortArray(that.imageDecorations);
                             that.sortArray(aImages);
                             callback(aImages);
                         }
@@ -137,6 +164,7 @@ HCSegment.prototype = {
             newmargin = (i === 0) ? 0 : (currentHeight * margin_overlap).toFixed(2);
             tempIndex--;
 
+            //Adding Segment
             mynewDiv = $("<div />")
                 .attr('id', "segment_" + i)
                 .addClass('segment')
@@ -149,39 +177,49 @@ HCSegment.prototype = {
 
             //Append image segment
             mynewDiv.append(this.imageSegments[i]);
-            var myornamentDiv = $("<div />")
-                //.attr('id', 'ornament_'+i)
-                .addClass('ornament')
-                .css({
-                    'position': 'absolute',
-                    'width': '100%',
-                    'text-align': 'center',
-                    'bottom': '10%'
-                });
             
             //Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
-            if (i < numberElements-1 && i > 0) {
-                for (var inner = i; inner < (i + i); inner++) {
-                    
-
-                    myornamentDiv.append(this.createOrnament(ornamentCount));
+            if (i < numberElements-1 && i > 0) {  //Don't include the last segment (trunk)
+                var varyingwidth = Math.round(((130 / numberElements ) * i));  // 100 - (100 / 6) * rowNumber
+                var paddingleft = (100 - varyingwidth) / 2;
+                
+                //Adding Ornament
+                var myornamentDiv = $("<div />")
+                    //.attr('id', 'ornament_'+i)
+                    .addClass('ornament')
+                    .css({
+                        'position': 'absolute',
+                        'width': varyingwidth + '%',
+                        'text-align': 'center',
+                        'bottom': '20%',
+                        'left' : paddingleft + '%',
+                        'margin' : '0 auto'
+                    });
+                
+                for (var inner = 1; inner <= i; inner++) {
+                    myornamentDiv.append(this.createOrnament(ornamentCount, numberElements, i, inner));
                     ornamentCount++;
-
                 }
                 mynewDiv.append(myornamentDiv);
             }
-
-
+            //Append the segment to the tree
             $("#tree").append(mynewDiv);
         }
 
-        //this.createDecorations(this.segment.number_of_segments);
         var max_degree = 45;
         var duration = 300;
         //this.shakeDirection("left", max_degree, duration);
     },
-    createOrnament: function(inner) {
-        return this.imageDecorations[inner];
+    createOrnament: function(current_item, numberElements, number_ornaments_in_row, inner) {
+        
+        var leftposition = (Math.round((100 / (number_ornaments_in_row + 1))) * inner);
+        $(this.imageDecorations[current_item]).css({
+            'position' : 'absolute',
+            'left' : leftposition + '%',
+            'margin-left': -(this.imageDecorations[current_item].width / 2),
+            'top' : '0%'
+        });
+        return this.imageDecorations[current_item];
     },
     shake:function(direction, current_degree, duration, max_degree){
         var that = this;
@@ -208,11 +246,11 @@ HCSegment.prototype = {
                 if (direction == 'left'){
                     //center_x -= 0;
                     that.segmentRotate( "#segment_" + i, duration, center_x, center_y, -previous);
-                    that.decorationRotate("#segment_" + i + " .ornament img", duration, current_degree);
+                    that.decorationRotate("#segment_" + i + " .ornament img", duration, center_x, current_degree);
                 } else {
                     //center_x += 0;
                     that.segmentRotate( "#segment_" + i, duration, center_x, center_y, previous);
-                    that.decorationRotate("#segment_" + i + " .ornament img", duration, -current_degree);
+                    that.decorationRotate("#segment_" + i + " .ornament img", duration, center_x, -current_degree);
                 }
             }
         }
@@ -227,9 +265,10 @@ HCSegment.prototype = {
         });
     },
     //Rotates the decoration X degrees for X duration
-    decorationRotate: function(imageId, duration, animateDegree){
+    decorationRotate: function(imageId, duration, center_x, animateDegree){
         $(imageId).rotate({
             duration: duration,
+            center: [center_x + '%', '0%'],
             animateTo: animateDegree,
             easing: $.easing.easeInOutCubic
         });

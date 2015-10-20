@@ -6,7 +6,7 @@
             "guidelines_header" : "how to play",
             "rules_header" : "rules",
             "shake_text" : "Shake to play",
-            "resistance" : "20",
+            "winning_prizes" : "3",
             "segment" : 
                 {
                     "number_of_segments" : "7",
@@ -19,10 +19,12 @@
                 },
             "decoration":
                 {
-                    "number_of_variants" : "2",
+                    "number_of_variant_decorations" : "2",
+                    "number_of_variant_prizes": "3",
                     "filepath" : "decorations/",
-                    "alternative_text" : "Fragile",
-                    "prename" : "orn_",
+                    "alternative_text" : "Win me!",
+                    "deco_prename" : "orn_",
+                    "prize_prename" : "gift_",
                     "filetype" : ".png",
                     "height" : "25",
                     "width" : "25"

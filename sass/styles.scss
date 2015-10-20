@@ -25,25 +25,14 @@ $main_background: #000000;
 /* =Reset default browser CSS. Based on work by Eric Meyer: http://meyerweb.com/eric/tools/css/reset/index.html
 -------------------------------------------------------------- */
 
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
+html, body, div, span, applet,
+object, iframe,
+h1, h2,
+h3, h4,
+h5, h6,
+p, blockquote,
+pre, a,
+abbr, acronym,
 address,
 big,
 cite,
@@ -458,15 +447,12 @@ a.button:hover {
         bottom: 12%;
         width: 100%;
     }
-     #tree .segment > img {
-width: auto;
-    max-width: 100%;
-        padding:0 5%;
-        min-height:180px;
+    .treeframe { width:90%; margin: 0 auto;}
+    .segment > img {
+        width: auto;
+        max-width: 100%;
+        min-height:185px;
         height: auto;
-    }
-    #tree .ornament > img {
-        margin: 0 15px;
     }
 }
 
@@ -474,14 +460,16 @@ width: auto;
 /* Extra Small Devices, Phones */
 
 @media only screen and (min-width: 480px) {
-   #tree {
-        max-width: 960px;
+    .treeframe{
+        max-width: 380px;
+        width:100%;
+        margin: 0 auto;
     }
-    #tree .segment > img {
+    .segment > img {
         width: auto;
     }
-     #tree .ornament > img {
-        margin: 0 15px;
+    .treeframe .ornament > img {
+       
     }
 }
 
@@ -490,7 +478,7 @@ width: auto;
 
 @media only screen and (min-width: 768px) {
     #tree {
-        width: 100%;
+        // width: 100%;
     }
 }
 
