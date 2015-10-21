@@ -11,8 +11,13 @@ HCSegment.prototype = {
             cache: false,
             url: 'includes/hc_settings.json',
             success: function(data) {
-                that.settings = [];
-                that.settings.push({
+                
+                //Create an array of objects
+                that.segment = data['settings'][0].segment;
+                that.decoration = data['settings'][0].decoration;
+                
+                //Create an array of objects
+                that.settings = ({
                     "imagePath": data['settings'][0].imagePath,
                     "main_background": data['settings'][0].main_background,
                     "guidelines_header": data['settings'][0].guidelines_header,
@@ -20,7 +25,9 @@ HCSegment.prototype = {
                     "shake_text": data['settings'][0].shake_text,
                     "winning_prizes": data['settings'][0].winning_prizes
                 });
-                that.preloadImages(that.settings[0].imagePath, data['settings'][0].segment, data['settings'][0].decoration);
+                
+                //Preload the images
+                that.preloadImages(that.settings.imagePath, that.segment, that.decoration);
             }
         });
     },
@@ -143,12 +150,12 @@ HCSegment.prototype = {
     },
     //Initialise fields in DOMd
     initDOM: function() {
-        this.checkCount = 0;
+        //this.checkCount = 0;
         this.iPrizeCount = 0;
 
         //Change background image
         $('body').css({
-            'background': 'url(' + this.settings[0].imagePath + this.settings[0].main_background + ') no-repeat center center',
+            'background': 'url(' + this.settings.imagePath + this.settings.main_background + ') no-repeat center center',
             'background-size': 'cover'
         });
 
@@ -181,7 +188,7 @@ HCSegment.prototype = {
             
             //Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
             if (i < numberElements-1 && i > 0) {  //Don't include the last segment (trunk)
-                var varyingwidth = Math.round(((130 / numberElements ) * i));  // 100 - (100 / 6) * rowNumber
+                var varyingwidth = Math.round(((130 / numberElements ) * i));  // 100 - (100 / 6) * rowNumber  + added 30 extra for padding
                 var paddingleft = (100 - varyingwidth) / 2;
                 
                 //Adding Ornament
@@ -273,71 +280,47 @@ HCSegment.prototype = {
             easing: $.easing.easeInOutCubic
         });
     },
+    getNumberOfWinningPrizes:function(){
+        return this.settings.winning_prizes;
+    },
     releaseDecoration: function(){
-        var total_winning_prizes = this.settings[0].winning_prizes;
+        var total_winning_prizes = this.settings.winning_prizes;
+        
+        var total_segments = parseInt(this.segment.number_of_segments,10);
+        var segment_height = parseInt(this.segment.height,10);
+        var decoration_height = parseInt(this.decoration.height,10);
+        
+        //CALCULATE HEIGHT OF TREE - all segments - top segment, multiplied by the topmargin  + top
+        var heightoftree = ((total_segments - 1) *  (segment_height * 0.25) + segment_height);
 
-        //Select a random image to fall
+        //Select a random image to fall from tree
         var aDecoImages = $('.segment .ornament img');
         
         if (aDecoImages.length > 0){
             var randomitem = aDecoImages[Math.floor(Math.random() * aDecoImages.length)];
         
-            var parentDiv = $("#"+randomitem.id).parents('div.segment');
-
+            var parentDiv = $("#tree");
+            var myString = $($("#"+randomitem.id).parents('div.segment'))[0].id.split("_").pop();
+            var topposition = (((segment_height * (myString-1)) * 0.25) + segment_height + 10);
             var clone_parent =  $("#"+randomitem.id).parents('.ornament').clone();
             
             clone_parent.css({
-                'bottom' : 'inherit',
-                'top' : '50%'
+                'top' : topposition
             });
             
             $("img#"+randomitem.id).rotate({
-                duration:10, animateTo: 0, easing: $.easing.easeInOutCubic
+                duration:10,
+                animateTo: 0,
+                easing: $.easing.easeInOutCubic
             });
 
-            clone_parent.insertBefore(parentDiv);
+            parentDiv.append(clone_parent);
             clone_parent.empty().append( $("#"+randomitem.id) );
-            
-            clone_parent.animate({ top : '95%'}, 500);
+            clone_parent.animate({ top : heightoftree - (heightoftree * 0.05) }, 500);
 
-            //var myString = $($("#"+randomitem.id).parents('div.segment'))[0].id.split("_").pop();
-            //console.log(myString);
-
-            //var fallheight = 0;
-            //for (var i = myString; i < this.imageSegments.length-1; i++) {
-                //console.log(i);
-            //}
-
-            //console.log(clone_parent);
-            //console.log($("#"+randomitem.id));
-
-            //$(clone_parent).insertBefore( $("#"+randomitem.id).parents('div.segment') );
-
-            //Make object fall
-            //$("#"+randomitem.id).animate({'bottom': 0}, 2000, function(){
-                
-                //$(this).addClass('won').css({'top': 100});
-                
-                //var previousSegment = parseInt(myString, 10)-1;
-                //console.log(previousSegment);
-                //$("#segment_" + previousSegment).insertBefore( clone_parent );
-                //console.log($('#'+randomitem.id).parents('div.segment'));
-                //APPEND TO item before parent
-                //$('#'+randomitem.id).parents('div.segment').insertBefore($(this));
-            //});
-            
-            //Check if it's a prize that has fallen
-            if ( randomitem.id.substr(0, 5) == 'prize'){
-                this.iPrizeCount++;
-                if (total_winning_prizes == this.iPrizeCount){
-                    //Wait a split second for animation to finish
-                    //YOU HAVE WON!
-                    setTimeout(function(){
-                        //alert('WINNER!!');
-                    }, 1500);
-                }
-            }
+            return randomitem;
         }
+        return null;
     }
     // shakeDirection: function(direction, max_degree, duration) {
     //     var MAX_DEGREES = 50;

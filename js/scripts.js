@@ -3,13 +3,16 @@
     var game = new HCSegment('#segment');
     var orientation = '';
     var inaction = false;
+    var gamecount = 0;
+    var prizes_won = 0;
 
     game.preloadSettings();
     
 
      $('#tree').click(function(event){
         if (!inaction){
-            var timeinterval = 360;
+            inaction = true;
+            var timeinterval = 200;
             var delaytimer = 0;
             var degrees = 50;
             var direction = "right";
@@ -19,8 +22,8 @@
                 game.shake(direction, degrees, timeinterval, 70);
                 direction = (direction == 'left') ? 'right' : 'left';
                 degrees = degrees/2;
-                inaction = true;
-                
+                gamecount++;
+
                 if (degrees < 1) {
                     inaction = false;
                     clearTimeout(shakeanimation);
@@ -28,19 +31,51 @@
                 
             }, timeinterval);
           
+            //Check for winner after a few seconds
             setTimeout(function(){
-                game.releaseDecoration();
-            },100);
+                checkWinner();
+            }, 460);
         }
     });
 
+    /*
+    * Releases the ornament and checks if it's a prize
+    * If its a prize then add to prizes_won until winning total is reached
+    */
+    function checkWinner(){
+        if (gamecount > 10){
+           gamecount = 0;
+           prize = game.releaseDecoration();
+           
+            //Check if it's a prize that has fallen
+            if (prize !== null){
+                if ( prize.id.substr(0, 5) == 'prize'){
+                    prizes_won++;
+                    
+                    //WINNER?
+                    if (prizes_won == game.getNumberOfWinningPrizes()){
+                       //YOU HAVE WON!
+                        setTimeout(function(){
+                            //alert('WINNER!!');
+                        }, 1000);
+                    }
+                }
+            }
+        }
+    }
+
     $(document).ready(function() {
+
         //DETECT orientation and create action
+        // Listen for the deviceorientation event and handle the raw data
         if (window.DeviceOrientationEvent) {
-            // Listen for the deviceorientation event and handle the raw data
+            
+            
+            var direction = "left";
+            var leftdirection = false;
 
             //window.addEventListener('devicemotion', deviceMotionHandler);
-            window.addEventListener('deviceorientation', function(eventData) {
+            window.addEventListener('deviceorientation', function(eventData){
                 // gamma is the left-to-right tilt in degrees, where right is positive
                 var tiltLR = Math.round(eventData.gamma);
 
@@ -49,26 +84,65 @@
 
                 // alpha is the compass direction the device is facing in degrees
                 var dir = Math.round(eventData.alpha);
-
+                
+                var flexible_margin = 0;
+                var shake_margin = 10;
                 //Check forward tilt
-                if (tiltFB < 90){ //tilted forward - no nothing
-                    if (tiltLR < 0) {
-                        //move left
-                        game.shake("left", -tiltLR, 2, null);
-                        setTimeout(function(){
-                            game.releaseDecoration();
-                        },500);
-                    } else {
+                if (tiltFB > -flexible_margin && tiltFB < 90){  //Front to back range - only works if it's within range
+
+                    // UNCOMMENT IF YOU WANT TO REACT ON FLAT/LEVEL ROTATING
+                    // if (tiltLR < flexible_margin && tiltLR > -flexible_margin) {
+                    //     if ( dir < 90 && dir > 0 ){
+                    //         game.shake("left", dir, 2, null);
+                            
+                    //         if (direction == 'right' && dir > shake_margin){
+                    //             leftdirection = true;
+                    //             gamecount++;
+                    //             direction = 'left';
+                    //         }
+
+                    //     } else if (dir > 270 && dir < 360){
+                    //         game.shake("right", 360-dir, 2, null);
+
+                    //         if (direction == 'left' && dir < 340){
+                    //             leftdirection = true;
+                    //             gamecount++;
+                    //             direction = 'right';
+                    //         }
+
+                    //     }
+                    // } else 
+                    if (tiltLR < -flexible_margin && tiltLR > -90) {
+                            //move left
+                            game.shake("left", -tiltLR, 2, null);
+
+                            if (direction == 'right' && tiltLR < -shake_margin){
+                                leftdirection = true;
+                                gamecount++;
+                                direction = 'left';
+                            }
+
+                    } else if (tiltLR > flexible_margin && tiltLR < 90) {
                         game.shake("right", tiltLR, 2, null);
-                    }   
+                        
+                        if (direction == 'left' && tiltLR > shake_margin){
+                            leftdirection = true;
+                            gamecount++;
+                            direction = 'right';
+                        }
+                    }
                 }
+
+                setTimeout(function(){
+                    checkWinner();
+                }, 1000);
                 
-                
-                //$("#answer").text(tiltFB + ' sf-> ' + game.checkCount) // + " : " + tiltFB + " : " + dir);
+                $("#answer").text(gamecount + ' : ' +tiltLR + " : " + dir);
+                //$("#answer").text(tiltFB + ' : ' +tiltLR + " : " + dir);
 
             }, false);
         } else {
-            $("#doEvent").text("Not supported.");
+            $("#answer").text("Not supported.");
         }
 
         // setTimeout(function(){
