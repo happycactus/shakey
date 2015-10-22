@@ -341,6 +341,11 @@ hr {
         min-height:185px;
         height: auto;
     }
+img#segment1 {
+    min-height: 125px;
+    height: 185px;
+    padding: 60px 0 0 0;
+}
     .treeframe img{z-index:99999;}
 }
 
@@ -353,6 +358,10 @@ hr {
     }
     .segment > img {
         width: auto;
+    }
+    img#segment1 {
+        min-height: 185px;
+        padding: 0 0 0 0;
     }
 }
 
