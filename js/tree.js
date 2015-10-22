@@ -285,6 +285,8 @@ HCSegment.prototype = {
     },
     releaseDecoration: function(){
         var total_winning_prizes = this.settings.winning_prizes;
+        var negvalue = 25;
+        
         
         var total_segments = parseInt(this.segment.number_of_segments,10);
         var segment_height = parseInt(this.segment.height,10);
@@ -292,32 +294,57 @@ HCSegment.prototype = {
         
         //CALCULATE HEIGHT OF TREE - all segments - top segment, multiplied by the topmargin  + top
         var heightoftree = ((total_segments - 1) *  (segment_height * 0.25) + segment_height);
-
+        var randTop = (Math.random() * 0.05) + 0.01 // Originally this value was 0.05 instead of variable randTop
+        var fallPosition = (heightoftree - (heightoftree * randTop));
         //Select a random image to fall from tree
         var aDecoImages = $('.segment .ornament img');
         
         if (aDecoImages.length > 0){
             var randomitem = aDecoImages[Math.floor(Math.random() * aDecoImages.length)];
-        
             var parentDiv = $("#tree");
             var myString = $($("#"+randomitem.id).parents('div.segment'))[0].id.split("_").pop();
             var topposition = (((segment_height * (myString-1)) * 0.25) + segment_height + 10);
+            //clone_parent clones the div ornament + images included
             var clone_parent =  $("#"+randomitem.id).parents('.ornament').clone();
+            var previousOrnPosition = 0;
+            var itemSmaller = false;
             
+
             clone_parent.css({
                 'top' : topposition
             });
             
             $("img#"+randomitem.id).rotate({
-                duration:10,
-                animateTo: 0,
-                easing: $.easing.easeInOutCubic
+                duration:500,
+                animateTo: 360,
+                easing: $.easing.easeInOutBox,
+                center: ['50%', '50%']
             });
 
+             
+            //Add to DOM
             parentDiv.append(clone_parent);
-            clone_parent.empty().append( $("#"+randomitem.id) );
-            clone_parent.animate({ top : heightoftree - (heightoftree * 0.05) }, 500);
+            
+            $.each($('.fallen'), function(index, val){
+                var currentOrnDropped = $(val).css('top').slice(0,-2);
+                
+                if (fallPosition < currentOrnDropped && !itemSmaller){
+                    previousOrnPosition = index;
+                    itemSmaller = true;
+                }
+            });
+            
+            //PLACE BEHIND PREVIOUS OBJECTS
+            if ( $('.fallen').length > 0  && itemSmaller ){
+                $( clone_parent ).insertBefore( $('.fallen')[previousOrnPosition] );
+            }
 
+            //Clear all images within ornament container and add only the current ornament
+            clone_parent.empty().addClass('fallen').append( $("#"+randomitem.id) );
+            
+            //ANIMATE
+            clone_parent.animate({top : fallPosition }, 500);
+      
             return randomitem;
         }
         return null;
