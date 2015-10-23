@@ -131,6 +131,7 @@
                             direction = 'right';
                         }
                     }
+                    $(".scored").text(shake_margin-gamecount);
                 }
 
                 setTimeout(function(){

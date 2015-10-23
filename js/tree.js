@@ -11,11 +11,11 @@ HCSegment.prototype = {
             cache: false,
             url: 'includes/hc_settings.json',
             success: function(data) {
-                
+
                 //Create an array of objects
                 that.segment = data['settings'][0].segment;
                 that.decoration = data['settings'][0].decoration;
-                
+
                 //Create an array of objects
                 that.settings = ({
                     "imagePath": data['settings'][0].imagePath,
@@ -25,7 +25,7 @@ HCSegment.prototype = {
                     "shake_text": data['settings'][0].shake_text,
                     "winning_prizes": data['settings'][0].winning_prizes
                 });
-                
+
                 //Preload the images
                 that.preloadImages(that.settings.imagePath, that.segment, that.decoration);
             }
@@ -35,11 +35,12 @@ HCSegment.prototype = {
         var that = this;
         var images = [];
         var randomid = 0;
-        var aVariants = [], aPrizes = [];
+        var aVariants = [],
+            aPrizes = [];
         var number_of_segments = parseInt(segment_settings.number_of_segments, 10);
         var number_winning_prizes = parseInt(deco_settings.prizes_to_win, 10);
-        var totalDecorations = ((number_of_segments - 2) * (number_of_segments - 2 + 1)) / 2;  //Split in two - one for ornaments the other for gifts  - minus the trunk and top
-        
+        var totalDecorations = ((number_of_segments - 2) * (number_of_segments - 2 + 1)) / 2; //Split in two - one for ornaments the other for gifts  - minus the trunk and top
+
         //Create segments
         for (var i = 1; i <= number_of_segments; i++) {
             images.push({
@@ -56,12 +57,12 @@ HCSegment.prototype = {
         for (var x = 1; x <= parseInt(deco_settings.number_of_variant_decorations, 10); x++) {
             aVariants.push(x);
         }
-        
+
         //Create prize decorations
         for (var a = 1; a <= parseInt(deco_settings.number_of_variant_prizes, 10); a++) {
             aPrizes.push(a);
         }
-        
+
         for (var b = 1; b <= Math.floor(totalDecorations / 2); b++) {
             randomid = aPrizes[Math.floor(Math.random() * aPrizes.length)];
             images.push({
@@ -94,7 +95,7 @@ HCSegment.prototype = {
             that.initDOM();
         }
     },
-    shuffleArray: function(collection){
+    shuffleArray: function(collection) {
         for (var i = collection.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
             var temp = collection[i];
@@ -185,12 +186,12 @@ HCSegment.prototype = {
 
             //Append image segment
             mynewDiv.append(this.imageSegments[i]);
-            
+
             //Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
-            if (i < numberElements-1 && i > 0) {  //Don't include the last segment (trunk)
-                var varyingwidth = Math.round(((130 / numberElements ) * i));  // 100 - (100 / 6) * rowNumber  + added 30 extra for padding
+            if (i < numberElements - 1 && i > 0) { //Don't include the last segment (trunk)
+                var varyingwidth = Math.round(((130 / numberElements) * i)); // 100 - (100 / 6) * rowNumber  + added 30 extra for padding
                 var paddingleft = (100 - varyingwidth) / 2;
-                
+
                 //Adding Ornament
                 var myornamentDiv = $("<div />")
                     //.attr('id', 'ornament_'+i)
@@ -200,10 +201,10 @@ HCSegment.prototype = {
                         'width': varyingwidth + '%',
                         'text-align': 'center',
                         'bottom': '20%',
-                        'left' : paddingleft + '%',
-                        'margin' : '0 auto'
+                        'left': paddingleft + '%',
+                        'margin': '0 auto'
                     });
-                
+
                 for (var inner = 1; inner <= i; inner++) {
                     myornamentDiv.append(this.createOrnament(ornamentCount, numberElements, i, inner));
                     ornamentCount++;
@@ -212,27 +213,51 @@ HCSegment.prototype = {
             }
             //Append the segment to the tree
             $("#tree").append(mynewDiv);
-        }
 
+        }
+        theImage = $('<img />').attr({src: 'images/icon-black.png', width: '45%'});
+        moveDiv = $("<div />")
+            .addClass('moveit')
+            .append(theImage)
+            .css({
+                'position': 'absolute',
+                'top': '12%',
+                'width': '50%',
+                'right': '0',
+                'text-align': 'center'
+               
+               });
+            scoreDiv = $("<div />")
+                .addClass('scored')
+                .css({
+                    'position': 'absolute',
+                    'top': '12%',
+                    'width': '50%',
+                    'left': '0',
+                    'text-align': 'center'
+                   
+                   });
+        $(".container").prepend(moveDiv);
+        $(".container").prepend(scoreDiv);
         var max_degree = 45;
         var duration = 300;
         //this.shakeDirection("left", max_degree, duration);
     },
     createOrnament: function(current_item, numberElements, number_ornaments_in_row, inner) {
-        
+
         var leftposition = (Math.round((100 / (number_ornaments_in_row + 1))) * inner);
         $(this.imageDecorations[current_item]).css({
-            'position' : 'absolute',
-            'left' : leftposition + '%',
+            'position': 'absolute',
+            'left': leftposition + '%',
             'margin-left': -(this.imageDecorations[current_item].width / 2)
         });
         return this.imageDecorations[current_item];
     },
-    shake:function(direction, current_degree, duration, max_degree){
+    shake: function(direction, current_degree, duration, max_degree) {
         var that = this;
-        var MAX_DEGREES = (max_degree === "undefined" || max_degree === null) ?  50 : max_degree;
-        var number_segments = that.imageSegments.length -1;
-        
+        var MAX_DEGREES = (max_degree === "undefined" || max_degree === null) ? 50 : max_degree;
+        var number_segments = that.imageSegments.length - 1;
+
         //Only create animation to the maximum degrees
         current_degree = (current_degree > MAX_DEGREES) ? MAX_DEGREES : current_degree;
         var degrees = Math.floor(current_degree / number_segments);
@@ -240,9 +265,9 @@ HCSegment.prototype = {
         //Rotate from the bottom center point
         var center_y = 100;
         var center_x = 50;
-        
+
         var previous = degrees;
-        
+
         //Only rotate if degree is more than zero
         if (current_degree >= 1 && current_degree <= MAX_DEGREES) {
             //Repeat rotation for each segment moving slightly higher/lower and left/right
@@ -250,20 +275,20 @@ HCSegment.prototype = {
                 previous += degrees;
                 center_y += 10;
                 //center_x += 0;
-                if (direction == 'left'){
+                if (direction == 'left') {
                     //center_x -= 0;
-                    that.segmentRotate( "#segment_" + i, duration, center_x, center_y, -previous);
+                    that.segmentRotate("#segment_" + i, duration, center_x, center_y, -previous);
                     that.decorationRotate("#segment_" + i + " .ornament img", duration, center_x, current_degree);
                 } else {
                     //center_x += 0;
-                    that.segmentRotate( "#segment_" + i, duration, center_x, center_y, previous);
+                    that.segmentRotate("#segment_" + i, duration, center_x, center_y, previous);
                     that.decorationRotate("#segment_" + i + " .ornament img", duration, center_x, -current_degree);
                 }
             }
         }
     },
     //Rotates the segment from the xy axis X degrees for X duration
-    segmentRotate: function( segmentId, duration, center_x, center_y, animateDegree){
+    segmentRotate: function(segmentId, duration, center_x, center_y, animateDegree) {
         $(segmentId).rotate({
             duration: duration,
             center: [center_x + '%', center_y + '%'],
@@ -272,7 +297,7 @@ HCSegment.prototype = {
         });
     },
     //Rotates the decoration X degrees for X duration
-    decorationRotate: function(imageId, duration, center_x, animateDegree){
+    decorationRotate: function(imageId, duration, center_x, animateDegree) {
         $(imageId).rotate({
             duration: duration,
             center: [center_x + '%', '0%'],
@@ -280,79 +305,81 @@ HCSegment.prototype = {
             easing: $.easing.easeInOutCubic
         });
     },
-    getNumberOfWinningPrizes:function(){
+    getNumberOfWinningPrizes: function() {
         return this.settings.winning_prizes;
     },
-    releaseDecoration: function(){
-        var total_winning_prizes = this.settings.winning_prizes;
-        var negvalue = 25;
-        
-        
-        var total_segments = parseInt(this.segment.number_of_segments,10);
-        var segment_height = parseInt(this.segment.height,10);
-        var decoration_height = parseInt(this.decoration.height,10);
-        
-        //CALCULATE HEIGHT OF TREE - all segments - top segment, multiplied by the topmargin  + top
-        var heightoftree = ((total_segments - 1) *  (segment_height * 0.25) + segment_height);
-        var randTop = (Math.random() * 0.05) + 0.01 // Originally this value was 0.05 instead of variable randTop
-        var fallPosition = (heightoftree - (heightoftree * randTop));
-        //Select a random image to fall from tree
-        var aDecoImages = $('.segment .ornament img');
-        
-        if (aDecoImages.length > 0){
-            var randomitem = aDecoImages[Math.floor(Math.random() * aDecoImages.length)];
-            var parentDiv = $("#tree");
-            var myString = $($("#"+randomitem.id).parents('div.segment'))[0].id.split("_").pop();
-            var topposition = (((segment_height * (myString-1)) * 0.25) + segment_height + 10);
-            //clone_parent clones the div ornament + images included
-            var clone_parent =  $("#"+randomitem.id).parents('.ornament').clone();
-            var previousOrnPosition = 0;
-            var itemSmaller = false;
-            
+    releaseDecoration: function() {
+            var total_winning_prizes = this.settings.winning_prizes;
+            var negvalue = 25;
 
-            clone_parent.css({
-                'top' : topposition
-            });
-            
-            $("img#"+randomitem.id).rotate({
-                duration:500,
-                animateTo: 360,
-                easing: $.easing.easeInOutBox,
-                center: ['50%', '50%']
-            });
 
-             
-            //Add to DOM
-            parentDiv.append(clone_parent);
-            
-            $.each($('.fallen'), function(index, val){
-                var currentOrnDropped = $(val).css('top').slice(0,-2);
-                
-                if (fallPosition < currentOrnDropped && !itemSmaller){
-                    previousOrnPosition = index;
-                    itemSmaller = true;
+            var total_segments = parseInt(this.segment.number_of_segments, 10);
+            var segment_height = parseInt(this.segment.height, 10);
+            var decoration_height = parseInt(this.decoration.height, 10);
+
+            //CALCULATE HEIGHT OF TREE - all segments - top segment, multiplied by the topmargin  + top
+            var heightoftree = ((total_segments - 1) * (segment_height * 0.25) + segment_height);
+            var randTop = (Math.random() * 0.05) + 0.01 // Originally this value was 0.05 instead of variable randTop
+            var fallPosition = (heightoftree - (heightoftree * randTop));
+            //Select a random image to fall from tree
+            var aDecoImages = $('.segment .ornament img');
+
+            if (aDecoImages.length > 0) {
+                var randomitem = aDecoImages[Math.floor(Math.random() * aDecoImages.length)];
+                var parentDiv = $("#tree");
+                var myString = $($("#" + randomitem.id).parents('div.segment'))[0].id.split("_").pop();
+                var topposition = (((segment_height * (myString - 1)) * 0.25) + segment_height + 10);
+                //clone_parent clones the div ornament + images included
+                var clone_parent = $("#" + randomitem.id).parents('.ornament').clone();
+                var previousOrnPosition = 0;
+                var itemSmaller = false;
+
+
+                clone_parent.css({
+                    'top': topposition
+                });
+
+                $("img#" + randomitem.id).rotate({
+                    duration: 500,
+                    animateTo: 360,
+                    easing: $.easing.easeInOutBox,
+                    center: ['50%', '50%']
+                });
+
+
+                //Add to DOM
+                parentDiv.append(clone_parent);
+
+                $.each($('.fallen'), function(index, val) {
+                    var currentOrnDropped = $(val).css('top').slice(0, -2);
+
+                    if (fallPosition < currentOrnDropped && !itemSmaller) {
+                        previousOrnPosition = index;
+                        itemSmaller = true;
+                    }
+                });
+
+                //PLACE BEHIND PREVIOUS OBJECTS
+                if ($('.fallen').length > 0 && itemSmaller) {
+                    $(clone_parent).insertBefore($('.fallen')[previousOrnPosition]);
                 }
-            });
-            
-            //PLACE BEHIND PREVIOUS OBJECTS
-            if ( $('.fallen').length > 0  && itemSmaller ){
-                $( clone_parent ).insertBefore( $('.fallen')[previousOrnPosition] );
-            }
 
-            //Clear all images within ornament container and add only the current ornament
-            clone_parent.empty().addClass('fallen').append( $("#"+randomitem.id) );
-            
-            //ANIMATE
-            clone_parent.animate({top : fallPosition }, 500);
-      
-            return randomitem;
+                //Clear all images within ornament container and add only the current ornament
+                clone_parent.empty().addClass('fallen').append($("#" + randomitem.id));
+
+                //ANIMATE
+                clone_parent.animate({
+                    top: fallPosition
+                }, 500);
+
+                return randomitem;
+            }
+            return null;
         }
-        return null;
-    }
-    // shakeDirection: function(direction, max_degree, duration) {
-    //     var MAX_DEGREES = 50;
-    //     var that = this;
-    //     var animation;
+        // shakeDirection: function(direction, max_degree, duration) {
+        //     var MAX_DEGREES = 50;
+        //     var that = this;
+        //     var animation;
 
     //     if (max_degree >= 1 && max_degree <= MAX_DEGREES) {
 
@@ -385,64 +412,64 @@ HCSegment.prototype = {
     // }
 
     // shakeRight: function(max_degree, duration){
-    // 	var t= this;
-    // 	var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
-    // 	var degrees = Math.floor(max_degree / number_segments );
+    //  var t= this;
+    //  var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+    //  var degrees = Math.floor(max_degree / number_segments );
 
-    // 	var previous = degrees;
-    // 	var center_y = 100;
-    // 	var center_x = 38;
+    //  var previous = degrees;
+    //  var center_y = 100;
+    //  var center_x = 38;
 
-    // 	if ( max_degree > 1){
-    // 		for (var i = number_segments -1; i >= 0; i--) {
-    // 			previous += degrees;
-    // 			center_x += 1;
-    // 			center_y += 15;
-    // 			duration += 10;
-    // 			$("div#divsegment_"+ i + " img")
-    // 			.rotate({
-    // 				duration:duration,
-    // 				center: [center_x+'%', center_y+'%'],
-    // 				animateTo: previous,
-    // 				easing: $.easing.easeInOutCubic,
-    // 				callback: function(){   
-    // 					t.shakeLeft(max_degree/2, duration);
-    // 				 }
-    // 			});
-    // 		}
-    // 	}
+    //  if ( max_degree > 1){
+    //      for (var i = number_segments -1; i >= 0; i--) {
+    //          previous += degrees;
+    //          center_x += 1;
+    //          center_y += 15;
+    //          duration += 10;
+    //          $("div#divsegment_"+ i + " img")
+    //          .rotate({
+    //              duration:duration,
+    //              center: [center_x+'%', center_y+'%'],
+    //              animateTo: previous,
+    //              easing: $.easing.easeInOutCubic,
+    //              callback: function(){   
+    //                  t.shakeLeft(max_degree/2, duration);
+    //               }
+    //          });
+    //      }
+    //  }
 
 
     // },
     // shakeLeft: function(max_degree, duration){
-    // 	var t= this;
-    // 	var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
-    // 	var degrees = Math.floor(max_degree / number_segments );
+    //  var t= this;
+    //  var number_segments = parseInt(t.segment.number_of_segments, 10)-1;
+    //  var degrees = Math.floor(max_degree / number_segments );
 
-    // 	var previous = degrees;
-    // 	var center_y = 100;
-    // 	var center_x = 38;
+    //  var previous = degrees;
+    //  var center_y = 100;
+    //  var center_x = 38;
 
-    // 	if ( max_degree > 1){
-    // 		for (var i = number_segments -1; i >= 0; i--) {
-    // 			previous += degrees;
-    // 			center_x += 1;
-    // 			center_y += 15;
-    // 			duration += 10;
-    // 			$("#divsegment_"+ i + " img")
-    // 				.rotate({
-    // 					//angle: previous, 
-    // 					duration: duration,
-    // 					center: [center_x+'%', center_y+'%'],
-    // 					animateTo: -previous,
-    // 					easing: $.easing.easeInOutCubic,
-    // 					callback: function(){   
+    //  if ( max_degree > 1){
+    //      for (var i = number_segments -1; i >= 0; i--) {
+    //          previous += degrees;
+    //          center_x += 1;
+    //          center_y += 15;
+    //          duration += 10;
+    //          $("#divsegment_"+ i + " img")
+    //              .rotate({
+    //                  //angle: previous, 
+    //                  duration: duration,
+    //                  center: [center_x+'%', center_y+'%'],
+    //                  animateTo: -previous,
+    //                  easing: $.easing.easeInOutCubic,
+    //                  callback: function(){   
 
-    // 						t.shakeRight(max_degree/2, duration);
-    // 					}
-    // 			});
-    // 		}
-    // 	}
+    //                      t.shakeRight(max_degree/2, duration);
+    //                  }
+    //          });
+    //      }
+    //  }
 
     // },
 
