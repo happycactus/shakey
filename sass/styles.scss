@@ -366,7 +366,14 @@ hr {
     .treeframe img {
         z-index: 99999;
     }
+    .main{
+        display: none;
+    }
+    .moveit{
+        display: none;
+    }
     .scored{
+        display: none;
         font-size: 3em;
         text-align: center;
         font-weight: bold;

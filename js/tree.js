@@ -333,7 +333,6 @@ HCSegment.prototype = {
             var total_segments = parseInt(this.segment.number_of_segments, 10);
             var segment_height = parseInt(this.segment.height, 10);
             var decoration_height = parseInt(this.decoration.height, 10);
-
             //CALCULATE HEIGHT OF TREE - all segments - top segment, multiplied by the topmargin  + top
             var heightoftree = ((total_segments - 1) * (segment_height * 0.25) + segment_height);
             var randTop = (Math.random() * 0.05) + 0.01; // Originally this value was 0.05 instead of variable randTop
@@ -348,6 +347,8 @@ HCSegment.prototype = {
                 var topposition = (((segment_height * (myString - 1)) * 0.25) + segment_height + 10);
                 //clone_parent clones the div ornament + images included
                 var clone_parent = $("#" + randomitem.id).parents('.ornament').clone();
+                shadowDiv_clone = shadowDiv.clone();
+
                 var previousOrnPosition = 0;
                 var itemSmaller = false;
                 var randomRotateDrop =  Math.floor(Math.random() * (390 - 340 + 1) + 340)
@@ -374,12 +375,14 @@ HCSegment.prototype = {
                     if (fallPosition < currentOrnDropped && !itemSmaller) {
                         previousOrnPosition = index;
                         itemSmaller = true;
+                        
                     }
                 });
 
                 //PLACE BEHIND PREVIOUS OBJECTS
                 if ($('.fallen').length > 0 && itemSmaller) {
                     $(clone_parent).insertBefore($('.fallen')[previousOrnPosition]);
+
                 }
 
                 //Clear all images within ornament container and add only the current ornament
@@ -392,6 +395,12 @@ HCSegment.prototype = {
                 clone_parent.animate({
                     top: fallPosition
                 }, 500);
+                console.log(clone_parent.find('img').position().left);
+                $(clone_parent).append(shadowDiv_clone.attr('class', 'droppedOrnShadow').css({
+                    'position': 'absolute',
+                    'width': '30px',
+                    'margin': '-72px auto 0px',
+                    'left': clone_parent.find('img').position().left-12}));
 
                 return randomitem;
             }
