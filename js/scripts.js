@@ -8,7 +8,7 @@
 
     game.preloadSettings();
     
-
+/*TEST CLICK*/
      $('#tree').click(function(event){
         if (!inaction){
             inaction = true;

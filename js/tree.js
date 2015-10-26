@@ -186,7 +186,18 @@ HCSegment.prototype = {
 
             //Append image segment
             mynewDiv.append(this.imageSegments[i]);
-
+            shadowDiv = $("<div />")
+                .addClass('shadowDiv')
+                .css({
+                    'position': 'relative',
+                    'background': 'rgba(0,0,0,0.2)',
+                    'width': '300px',
+                    'height': '100px',
+                    'margin': '0 auto',
+                    'margin-top': '-70px',
+                    'background':'url(images/shadow.png) 100% 100% / contain no-repeat ',
+                    'z-index': '-999px'
+                });
             //Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
             if (i < numberElements - 1 && i > 0) { //Don't include the last segment (trunk)
                 var varyingwidth = Math.round(((130 / numberElements) * i)); // 100 - (100 / 6) * rowNumber  + added 30 extra for padding
@@ -211,10 +222,12 @@ HCSegment.prototype = {
                 }
                 mynewDiv.append(myornamentDiv);
             }
+
             //Append the segment to the tree
             $("#tree").append(mynewDiv);
-
+           
         }
+        $("#tree").append(shadowDiv);
         theImage = $('<img />').attr({src: 'images/icon-grey.png', width: '45%'});
         moveDiv = $("<div />")
             .addClass('moveit')
@@ -295,6 +308,10 @@ HCSegment.prototype = {
             animateTo: animateDegree,
             easing: $.easing.easeInOutCubic
         });
+        $('.shadowDiv').css({
+                left: animateDegree/2
+         
+        })
     },
     //Rotates the decoration X degrees for X duration
     decorationRotate: function(imageId, duration, center_x, animateDegree) {
@@ -319,7 +336,7 @@ HCSegment.prototype = {
 
             //CALCULATE HEIGHT OF TREE - all segments - top segment, multiplied by the topmargin  + top
             var heightoftree = ((total_segments - 1) * (segment_height * 0.25) + segment_height);
-            var randTop = (Math.random() * 0.05) + 0.01 // Originally this value was 0.05 instead of variable randTop
+            var randTop = (Math.random() * 0.05) + 0.01; // Originally this value was 0.05 instead of variable randTop
             var fallPosition = (heightoftree - (heightoftree * randTop));
             //Select a random image to fall from tree
             var aDecoImages = $('.segment .ornament img');
@@ -333,7 +350,8 @@ HCSegment.prototype = {
                 var clone_parent = $("#" + randomitem.id).parents('.ornament').clone();
                 var previousOrnPosition = 0;
                 var itemSmaller = false;
-
+                var randomRotateDrop =  Math.floor(Math.random() * (390 - 340 + 1) + 340)
+                console.log(randomRotateDrop);
 
                 clone_parent.css({
                     'top': topposition
@@ -341,7 +359,7 @@ HCSegment.prototype = {
 
                 $("img#" + randomitem.id).rotate({
                     duration: 500,
-                    animateTo: 360,
+                    animateTo: randomRotateDrop,
                     easing: $.easing.easeInOutBox,
                     center: ['50%', '50%']
                 });
@@ -365,7 +383,10 @@ HCSegment.prototype = {
                 }
 
                 //Clear all images within ornament container and add only the current ornament
-                clone_parent.empty().addClass('fallen').append($("#" + randomitem.id));
+                clone_parent
+                .empty()
+                .addClass('fallen')
+                .append($("#" + randomitem.id));
 
                 //ANIMATE
                 clone_parent.animate({
