@@ -215,7 +215,7 @@ HCSegment.prototype = {
             $("#tree").append(mynewDiv);
 
         }
-        theImage = $('<img />').attr({src: 'images/icon-black.png', width: '45%'});
+        theImage = $('<img />').attr({src: 'images/icon-grey.png', width: '45%'});
         moveDiv = $("<div />")
             .addClass('moveit')
             .append(theImage)
