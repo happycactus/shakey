@@ -152,11 +152,14 @@ HCSegment.prototype = {
         });
     },
     nextSlide: function(val) {
-        console.log('sdas');
+       setTimeout(function(){
+               $('#slide3.slide img.bottom_img').animate({bottom: -25}, {duration:1000, easing: "easeOutBack"});
+               $('#slide3.slide .wincontent').animate({top: 0}, {duration:1000, easing: "easeOutBack"});
+              
+            }, 500);
          var windowWidth = $( window ).width();
         $('#slide3.slide').animate({left: 0},500);
-        $('#slide3.slide img.bottom_img').animate({bottom: 0},750);
-        $('#slide2').animate({left: -windowWidth},500);
+ $('#slide2').animate({left: -windowWidth},500);
         $('#slide1').removeClass('active');
     },
     //Initialise fields in DOMd
@@ -176,6 +179,7 @@ HCSegment.prototype = {
         $('#slide3 a').attr('href', this.outro.CTA_URL);
         $('#slide3 a').attr('style', this.outro.CTA_style);
         $('#slide3.slide img.bottom_img').animate({bottom: -400},700);
+        $('#slide3.slide .wincontent').animate({top: -$('.wincontent').height()},700);
        
         var windowWidth = $( window ).width();
         $('.slide').css({'left': windowWidth});
