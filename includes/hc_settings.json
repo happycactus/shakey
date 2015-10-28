@@ -1,35 +1,48 @@
-{ 
-    "settings": [
-        {
-            "imagePath" : "images/",
-            "main_background" : "bg.png",
-            "guidelines_header" : "how to play",
-            "rules_header" : "rules",
-            "shake_text" : "Shake to play",
-            "winning_prizes" : "3",
-            "segment" : 
-                {
-                    "number_of_segments" : "7",
-                    "filepath" : "segments/",
-                    "alternative_text" : "SHAKE ME",
-                    "prename" : "segment_",
-                    "filetype" : ".png",
-                    "height" : "190",
-                    "width" : "380"
-                },
-            "decoration":
-                {
-                    "number_of_variant_decorations" : "2",
-                    "number_of_variant_prizes": "3",
-                    "filepath" : "decorations/",
-                    "alternative_text" : "Win me!",
-                    "deco_prename" : "orn_",
-                    "prize_prename" : "gift_",
-                    "filetype" : ".png",
-                    "height" : "25",
-                    "width" : "25"
-                }
-            
+{
+    "settings": [{
+        "imagePath": "images/",
+        "main_background": "bg.png",
+        "guidelines_header": "how to play",
+        "rules_header": "rules",
+        "shake_text": "Shake to play",
+        "winning_prizes": "3",
+        "segment": {
+            "number_of_segments": "7",
+            "filepath": "segments/",
+            "alternative_text": "SHAKE ME",
+            "prename": "segment_",
+            "filetype": ".png",
+            "height": "190",
+            "width": "380"
+        },
+        "decoration": {
+            "number_of_variant_decorations": "2",
+            "number_of_variant_prizes": "3",
+            "filepath": "decorations/",
+            "alternative_text": "Win me!",
+            "deco_prename": "orn_",
+            "prize_prename": "gift_",
+            "filetype": ".png",
+            "height": "25",
+            "width": "25"
+        },
+        "intro": {
+            "header": "intro_header.png",
+            "instructionIcon": "icon-grey.png",
+            "body_txt": "<span style='color: white;margin: 0 auto;padding:15px;display: block;height: 100%;min-height:100%;max-width: 768px; font-size:12px'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi distinctio voluptas, eveniet magnam dolor doloremque voluptatibus, vero hic at. Omnis doloribus veritatis dolores possimus dignissimos facere aspernatur deserunt blanditiis accusantium?<br>sss<br><br><img src='images/icon-white.png' style='margin: 0 auto; display: block; max-width:inherit;' align='center' height='100'></span>",
+            "btn_txt" : "Ik snap het!",
+            "btn_style": "text-decoration: none; padding: 10px; width: 50%; background: #F00000; border-radius: 5px; color: white; display:block; margin: 10px auto;",
+            "small_txt": "<span style='display: block;font-size: 10px;color:white;background:none;padding: 15px; max-width: 768px; margin: 0 auto; width: 100%'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi distinctio voluptas, eveniet magnam dolor doloremque voluptatibus, vero hic at. Omnis doloribus veritatis dolores possimus dignissimos facere aspernatur deserunt blanditiis accusantium?"
+        },
+        "outro": {
+            "header_outro": "header_outro.png",
+            "body_txt": "<span style='color:#222; padding: 15px; display: block;height: 100%;min-height:100%;max-width: 768px; width:100%'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi distinctio voluptas, eveniet magnam dolor doloremque voluptatibus, vero hic at. Omnis doloribus veritatis dolores possimus dignissimos facere aspernatur deserunt blanditiis accusantium?</span>",
+            "CTA_txt": "Verzilver nu!",
+            "CTA_style": "text-decoration: none; padding: 10px; width: 50%; background: #FFD400; border-radius: 5px; color: white; display:block; margin: 10px auto;",
+            "CTA_URL": "#",
+            "bottom_img": "bottom_pic.png"
         }
-    ]
+
+
+    }]
 }

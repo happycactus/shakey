@@ -9,41 +9,41 @@
     game.preloadSettings();
     
 /*TEST CLICK*/
-    //  $('#tree').click(function(event){
-    //     if (!inaction){
-    //         inaction = true;
-    //         var timeinterval = 200;
-    //         var delaytimer = 0;
-    //         var degrees = 50;
-    //         var direction = "right";
+     $('#tree').click(function(event){
+        if (!inaction){
+            inaction = true;
+            var timeinterval = 200;
+            var delaytimer = 0;
+            var degrees = 50;
+            var direction = "right";
 
-    //         game.shake("left", 50, timeinterval, 70);
-    //         var shakeanimation = setInterval(function(){
-    //             game.shake(direction, degrees, timeinterval, 70);
-    //             direction = (direction == 'left') ? 'right' : 'left';
-    //             degrees = degrees/2;
-    //             gamecount++;
+            game.shake("left", 50, timeinterval, 70);
+            var shakeanimation = setInterval(function(){
+                game.shake(direction, degrees, timeinterval, 70);
+                direction = (direction == 'left') ? 'right' : 'left';
+                degrees = degrees/2;
+                gamecount++;
 
-    //             if (degrees < 1) {
-    //                 inaction = false;
-    //                 clearTimeout(shakeanimation);
-    //             }
+                if (degrees < 1) {
+                    inaction = false;
+                    clearTimeout(shakeanimation);
+                }
                 
-    //         }, timeinterval);
+            }, timeinterval);
           
-    //         //Check for winner after a few seconds
-    //         setTimeout(function(){
-    //             checkWinner();
-    //         }, 460);
-    //     }
-    // });
+            //Check for winner after a few seconds
+            setTimeout(function(){
+                checkWinner();
+            }, 460);
+        }
+    });
 
     /*
     * Releases the ornament and checks if it's a prize
     * If its a prize then add to prizes_won until winning total is reached
     */
     function checkWinner(){
-        if (gamecount > 10){
+        if (gamecount > 3){
            gamecount = 0;
            prize = game.releaseDecoration();
            
@@ -56,13 +56,20 @@
                     if (prizes_won == game.getNumberOfWinningPrizes()){
                        //YOU HAVE WON!
                         setTimeout(function(){
-                            //alert('WINNER!!');
+                           
+                            game.nextSlide($('#slide2'));
                         }, 1000);
                     }
                 }
             }
         }
     }
+        // window.onresize = function(event) {
+        //     var leftWidth = $( window ).width();
+        //     $('.slide').css('left', leftWidth);
+        //     $('.currentSlide').css('left', 0)
+        // };
+
 
     $(document).ready(function() {
 
@@ -118,6 +125,10 @@
 
                             if (direction == 'right' && tiltLR < -shake_margin){
                                 leftdirection = true;
+                                if($('#slide1').hasClass('active')){
+                                gamecount = 0;
+                                    
+                                }
                                 gamecount++;
                                 direction = 'left';
                             }
@@ -127,7 +138,11 @@
                         
                         if (direction == 'left' && tiltLR > shake_margin){
                             leftdirection = true;
-                            gamecount++;
+                              if($('#slide1').hasClass('active')){
+                                gamecount = 0;
+                                    
+                                }
+                                gamecount++;
                             direction = 'right';
                         }
                     }
@@ -140,7 +155,7 @@
                 
                 $("#answer").text(gamecount + ' : ' +tiltLR + " : " + dir);
                 //$("#answer").text(tiltFB + ' : ' +tiltLR + " : " + dir);
-
+              
             }, false);
         } else {
             $("#answer").text("Not supported.");

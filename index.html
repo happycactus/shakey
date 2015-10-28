@@ -1,35 +1,56 @@
 <!DOCTYPE html>
 <html class="no-js">
+
 <head>
-	<title>Happy Cactus Rockin' Christmas Tree</title>
+    <title>Happy Cactus Rockin' Christmas Tree</title>
     <meta name="Author" content="Rebecca Pas">
-	<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
-<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
     <link rel="stylesheet" href="css/styles.css">
-	<script type="text/javascript" src="js/lib/modernizr-2.7.0.min.js"></script>
-
-	<script>
-        Modernizr.load({
-            load: ['js/lib/jquery-1.11.3.min.js', 'js/lib/jquery-ui.1.10.4.min.js', 'js/lib/jqueryRotate.js', 'js/tree.js', 'js/lib/jquery.easing.min.js', 'js/scripts.js']
-        });
+    <script type="text/javascript" src="js/lib/modernizr-2.7.0.min.js"></script>
+    <script>
+    Modernizr.load({
+        load: ['js/lib/jquery-1.11.3.min.js', 'js/lib/jquery-ui.1.10.4.min.js', 'js/lib/jqueryRotate.js', 'js/tree.js', 'js/lib/jquery.easing.min.js', 'js/scripts.js']
+    });
     </script>
 </head>
+
 <body>
     <div class="container">
-      <!-- <div class="header"><img src="http://www.placehold.it/960x200" alt=""></div> -->
-        <div class="main" id="answer">
-
-        </div>    
-        <div class="frame">
-            
-            <div id="tree" class="treeframe">
-                   <!-- /* cut up tree to create the illustion of swaying */ -->
-            </div>   
+        <!-- <div class="header"><img src="http://www.placehold.it/960x200" alt=""></div> -->
+        <div id="slide2" class="slide">
+            <div class="frame">
+                <div id="tree" class="treeframe">
+                    <!-- /* cut up tree to create the illustion of swaying */ -->
+                </div>
+                <a href="#" class="prevSlide"></a>
+            </div>
         </div>
+        <div id="slide1" class="slide active">
+          
+            <div class="overlay">
+                <div class="slideContent">
 
+                      <img class="head_intro" width="100%" alt="">
+                    <div class="body_txt" style="text-align: left">
+                        <img class="icon" alt="">
+                    </div>
+                    <a href="#" class="nextSlide action"></a>
+                    <div class="small_txt"></div>
+                </div>
+            </div>
+        </div>
+        <div id="slide3" class="slide">
+            <img class="header_outro" width="100%" alt="">
+            <div class="body_txt">
+            </div>
+            <a href="#" class="action"></a>
+            <img class="bottom_img" width="100%" alt="" style="position: absolute; bottom: 0; left: 0;">
+        </div>
     </div>
 </body>
+
 </html>

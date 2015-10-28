@@ -15,6 +15,8 @@ HCSegment.prototype = {
                 //Create an array of objects
                 that.segment = data['settings'][0].segment;
                 that.decoration = data['settings'][0].decoration;
+                that.intro = data['settings'][0].intro;
+                that.outro = data['settings'][0].outro;
 
                 //Create an array of objects
                 that.settings = ({
@@ -149,8 +151,49 @@ HCSegment.prototype = {
             return (a_src < b_src) ? -1 : (a_src > b_src) ? 1 : 0;
         });
     },
+    nextSlide: function(val) {
+        console.log('sdas');
+         var windowWidth = $( window ).width();
+        $('#slide3.slide').animate({left: 0},500);
+        $('#slide3.slide img.bottom_img').animate({bottom: 0},750);
+        $('#slide2').animate({left: -windowWidth},500);
+        $('#slide1').removeClass('active');
+    },
     //Initialise fields in DOMd
     initDOM: function() {
+
+        $('#slide1 img.head_intro').attr({'src': this.settings.imagePath + this.intro.header});
+        $('#slide1 .body_txt img.icon').attr({'src': this.settings.imagePath + this.intro.instructionIcon});
+        $('#slide1 .body_txt').html(this.intro.body_txt);
+        $('#slide1 a.action').html(this.intro.btn_txt);
+        $('#slide1 a.action').attr('style', this.intro.btn_style);
+        $('#slide1 .small_txt').html(this.intro.small_txt);
+
+        $('#slide3 img.header_outro').attr({'src': this.settings.imagePath + this.outro.header_outro});
+        $('#slide3 .bottom_img').attr({'src': this.settings.imagePath + this.outro.bottom_img});
+        $('#slide3 .body_txt').html(this.outro.body_txt);
+        $('#slide3 a').html(this.outro.CTA_txt);
+        $('#slide3 a').attr('href', this.outro.CTA_URL);
+        $('#slide3 a').attr('style', this.outro.CTA_style);
+        $('#slide3.slide img.bottom_img').animate({bottom: -400},700);
+       
+        var windowWidth = $( window ).width();
+        $('.slide').css({'left': windowWidth});
+        $('#slide1.slide').css({'left': 0});
+        $('#slide2.slide').css({'left': 0});
+        $('a.nextSlide').on('click', function(){
+          
+            $(this).parents('.slideContent').animate({left: -windowWidth},600);
+       
+            $(this).parents('.slide').fadeOut(800);
+            $(this).parents('.slide').removeClass('active');
+
+        });
+        $('a.prevSlide').on('click', function(){
+            $(this).parents('.slide').animate({left: windowWidth},500);
+            $(this).parents('.slide').prev().animate({left: 0 },500);
+            $(this).parents('.slide').removeClass('active');
+        });
         //this.checkCount = 0;
         this.iPrizeCount = 0;
 
@@ -165,7 +208,7 @@ HCSegment.prototype = {
         var currentHeight = 0;
         var numberElements = this.imageSegments.length;
         var tempIndex = numberElements + 1;
-        var margin_overlap = 0.75;
+        var margin_overlap = 0.73;
         var ornamentCount = 0;
 
         for (var i = 0; i < numberElements; i++) {
@@ -195,7 +238,7 @@ HCSegment.prototype = {
                     'height': '100px',
                     'margin': '0 auto',
                     'margin-top': '-70px',
-                    'background':'url(images/shadow.png) 100% 100% / contain no-repeat ',
+                    'background': 'url(images/shadow.png) 100% 100% / contain no-repeat ',
                     'z-index': '-999px'
                 });
             //Create decorations per branch - ie segment 1 = 1 ornament, segment 5 = 5 ornaments
@@ -311,7 +354,7 @@ HCSegment.prototype = {
         $('.shadowDiv').css({
                 left: animateDegree/2
          
-        })
+        });
     },
     //Rotates the decoration X degrees for X duration
     decorationRotate: function(imageId, duration, center_x, animateDegree) {
@@ -335,7 +378,7 @@ HCSegment.prototype = {
             var decoration_height = parseInt(this.decoration.height, 10);
             //CALCULATE HEIGHT OF TREE - all segments - top segment, multiplied by the topmargin  + top
             var heightoftree = ((total_segments - 1) * (segment_height * 0.25) + segment_height);
-            var randTop = (Math.random() * 0.05) + 0.01; // Originally this value was 0.05 instead of variable randTop
+            var randTop = (Math.random() * 0.04) + 0.02; // Originally this value was 0.05 instead of variable randTop
             var fallPosition = (heightoftree - (heightoftree * randTop));
             //Select a random image to fall from tree
             var aDecoImages = $('.segment .ornament img');
@@ -344,14 +387,14 @@ HCSegment.prototype = {
                 var randomitem = aDecoImages[Math.floor(Math.random() * aDecoImages.length)];
                 var parentDiv = $("#tree");
                 var myString = $($("#" + randomitem.id).parents('div.segment'))[0].id.split("_").pop();
-                var topposition = (((segment_height * (myString - 1)) * 0.25) + segment_height + 10);
+                var topposition = (((segment_height * (myString - 1)) * 0.27) + segment_height-30);
                 //clone_parent clones the div ornament + images included
                 var clone_parent = $("#" + randomitem.id).parents('.ornament').clone();
                 shadowDiv_clone = shadowDiv.clone();
 
                 var previousOrnPosition = 0;
                 var itemSmaller = false;
-                var randomRotateDrop =  Math.floor(Math.random() * (390 - 340 + 1) + 340)
+                var randomRotateDrop =  Math.floor(Math.random() * (390 - 340 + 1) + 340);
                 console.log(randomRotateDrop);
 
                 clone_parent.css({
