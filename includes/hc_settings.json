@@ -28,11 +28,12 @@
         },
         "intro": {
             "header": "intro_header.png",
+            "overlay_color": "rgba(0,0,255,0.6)",
             "instructionIcon": "icon-grey.png",
-            "body_txt": "<span style='color: white;margin: 0 auto;padding:15px;display: block;height: 100%;min-height:100%;max-width: 768px; font-size:12px'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi distinctio voluptas, eveniet magnam dolor doloremque voluptatibus, vero hic at. Omnis doloribus veritatis dolores possimus dignissimos facere aspernatur deserunt blanditiis accusantium?<br>sss<br><br><img src='images/icon-white.png' style='margin: 0 auto; display: block; max-width:inherit;' align='center' height='100'></span>",
+            "body_txt": "<span style='color: white;margin: 0 auto;padding:15px;display: block;height: 100%;min-height:100%;max-width: 768px; font-size:12px'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi distinctio voluptas, eveniet magnam dolor doloremque voluptatibus, vero hic at. Omnis doloribus veritatis dolores possimus dignissimos facere aspernatur deserunt blanditiis accusantium?<br>sss<br><br><img src='images/icon-white.png' style='margin: 0 auto; display: block; max-width:inherit;' align='center' height='75'></span>",
             "btn_txt" : "Ik snap het!",
-            "btn_style": "text-decoration: none; padding: 10px; width: 50%; background: #F00000; border-radius: 5px; color: white; display:block; margin: 10px auto;",
-            "small_txt": "<span style='display: block;font-size: 10px;color:white;background:none;padding: 15px; max-width: 768px; margin: 0 auto; width: 100%'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi distinctio voluptas, eveniet magnam dolor doloremque voluptatibus, vero hic at. Omnis doloribus veritatis dolores possimus dignissimos facere aspernatur deserunt blanditiis accusantium?"
+            "btn_style": "text-decoration: none; padding: 10px; width: 50%; background: #1fca00; border-radius: 5px; color: white; display:block; margin: 10px auto;",
+            "small_txt": "<span style='display: block;font-size: 9px;color:white;background:none;padding: 15px; max-width: 768px; margin: 0 auto; width: 100%'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi distinctio voluptas, eveniet magnam dolor doloremque voluptatibus, vero hic at. Omnis doloribus veritatis dolores possimus dignissimos facere aspernatur deserunt blanditiis accusantium?"
         },
         "outro": {
             "header_outro": "header_outro.png",

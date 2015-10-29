@@ -153,8 +153,13 @@ HCSegment.prototype = {
     },
     nextSlide: function(val) {
        setTimeout(function(){
-               $('#slide3.slide img.bottom_img').animate({bottom: -25}, {duration:1000, easing: "easeOutBack"});
+
                $('#slide3.slide .wincontent').animate({top: 0}, {duration:1000, easing: "easeOutBack"});
+              
+            }, 1500);
+       setTimeout(function(){
+               $('#slide3.slide img.bottom_img').animate({bottom: -$('.bottom_img').height()/2}, {duration:1000, easing: "easeOutBack"});
+              
               
             }, 500);
          var windowWidth = $( window ).width();
@@ -169,6 +174,7 @@ HCSegment.prototype = {
         $('#slide1 .body_txt img.icon').attr({'src': this.settings.imagePath + this.intro.instructionIcon});
         $('#slide1 .body_txt').html(this.intro.body_txt);
         $('#slide1 a.action').html(this.intro.btn_txt);
+        $('#slide1 .overlay').css('background', this.intro.overlay_color);
         $('#slide1 a.action').attr('style', this.intro.btn_style);
         $('#slide1 .small_txt').html(this.intro.small_txt);
 
