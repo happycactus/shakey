@@ -185,7 +185,7 @@ HCSegment.prototype = {
         $('#slide3 a').attr('href', this.outro.CTA_URL);
         $('#slide3 a').attr('style', this.outro.CTA_style);
         $('#slide3.slide img.bottom_img').animate({bottom: -400},700);
-        $('#slide3.slide .wincontent').animate({top: -$('.wincontent').height()},700);
+        $('#slide3.slide .wincontent').animate({top: -$('.wincontent').height()-250},700);
        
         var windowWidth = $( window ).width();
         $('.slide').css({'left': windowWidth});
